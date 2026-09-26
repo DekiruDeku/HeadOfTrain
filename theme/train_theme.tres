@@ -1,0 +1,146 @@
+[gd_resource type="Theme" load_steps=12 format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/DejaVuSans.ttf" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+content_margin_left = 18.0
+content_margin_top = 16.0
+content_margin_right = 18.0
+content_margin_bottom = 16.0
+bg_color = Color(0.97, 0.957, 0.918, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_left = 14
+corner_radius_bottom_right = 14
+
+[sub_resource type="StyleBoxFlat" id="Normal"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.18, 0.32, 0.32, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.25, 0.42, 0.40, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.12, 0.23, 0.24, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Disabled"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.72, 0.75, 0.70, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.90, 0.60, 0.21, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="Track"]
+bg_color = Color(0.82, 0.84, 0.77, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+
+[sub_resource type="StyleBoxFlat" id="Fill"]
+bg_color = Color(0.34, 0.48, 0.37, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+
+[sub_resource type="StyleBoxEmpty" id="Empty"]
+
+[sub_resource type="StyleBoxFlat" id="Row"]
+content_margin_left = 14.0
+content_margin_top = 12.0
+content_margin_right = 14.0
+content_margin_bottom = 12.0
+bg_color = Color(0.90, 0.90, 0.84, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_left = 9
+corner_radius_bottom_right = 9
+
+[resource]
+default_font = ExtResource("1")
+default_font_size = 16
+Button/colors/font_color = Color(0.99, 0.98, 0.94, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.24, 0.29, 0.27, 1)
+Button/styles/normal = SubResource("Normal")
+Button/styles/hover = SubResource("Hover")
+Button/styles/pressed = SubResource("Pressed")
+Button/styles/disabled = SubResource("Disabled")
+Button/styles/focus = SubResource("Focus")
+Label/colors/font_color = Color(0.12, 0.20, 0.23, 1)
+Label/constants/line_spacing = 3
+Title/base_type = &"Label"
+Title/font_sizes/font_size = 30
+Section/base_type = &"Label"
+Section/font_sizes/font_size = 20
+Muted/base_type = &"Label"
+Muted/colors/font_color = Color(0.33, 0.39, 0.37, 1)
+Small/base_type = &"Label"
+Small/font_sizes/font_size = 13
+Small/colors/font_color = Color(0.33, 0.39, 0.37, 1)
+Success/base_type = &"Label"
+Success/colors/font_color = Color(0.18, 0.39, 0.26, 1)
+Error/base_type = &"Label"
+Error/colors/font_color = Color(0.64, 0.18, 0.13, 1)
+PanelContainer/styles/panel = SubResource("Panel")
+ProgressBar/styles/background = SubResource("Track")
+ProgressBar/styles/fill = SubResource("Fill")
+VBoxContainer/constants/separation = 10
+HBoxContainer/constants/separation = 12
+GridContainer/constants/h_separation = 16
+GridContainer/constants/v_separation = 14
+TabContainer/styles/panel = SubResource("Empty")
+RowButton/base_type = &"Button"
+RowButton/colors/font_color = Color(0.12, 0.20, 0.23, 1)
+RowButton/colors/font_focus_color = Color(0.12, 0.20, 0.23, 1)
+RowButton/styles/normal = SubResource("Row")
+MarkerButton/base_type = &"Button"
+MarkerButton/colors/font_color = Color(0.12, 0.20, 0.23, 1)
+MarkerButton/colors/font_focus_color = Color(0.12, 0.20, 0.23, 1)
+MarkerButton/colors/font_hover_color = Color(0.65, 0.20, 0.09, 1)
+MarkerButton/colors/font_pressed_color = Color(0.65, 0.20, 0.09, 1)
+MarkerButton/font_sizes/font_size = 17
+MarkerButton/styles/normal = SubResource("Empty")
+MarkerButton/styles/hover = SubResource("Empty")
+MarkerButton/styles/pressed = SubResource("Empty")

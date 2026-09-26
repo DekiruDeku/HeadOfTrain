@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/request_marker.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/markers.png" id="2"]
+[ext_resource type="Theme" path="res://theme/train_theme.tres" id="3"]
+[sub_resource type="AtlasTexture" id="Bubble"]
+atlas = ExtResource("2")
+region = Rect2(29, 66, 338, 274)
+
+[node name="RequestMarker" type="Control"]
+custom_minimum_size = Vector2(52, 48)
+offset_right = 52.0
+offset_bottom = 48.0
+theme = ExtResource("3")
+script = ExtResource("1")
+
+[node name="Bubble" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("Bubble")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="Select" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"MarkerButton"
+text = "01"
+mouse_default_cursor_shape = 2
+
+[connection signal="pressed" from="Select" to="." method="_on_pressed"]

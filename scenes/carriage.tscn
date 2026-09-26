@@ -1,0 +1,157 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/carriage.png" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/request_marker.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/conductor.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/carriage.gd" id="4"]
+[ext_resource type="Texture2D" path="res://assets/staff.png" id="5"]
+[sub_resource type="AtlasTexture" id="Mikhail"]
+atlas = ExtResource("5")
+region = Rect2(383, 36, 381, 918)
+
+[sub_resource type="AtlasTexture" id="Elena"]
+atlas = ExtResource("5")
+region = Rect2(773, 40, 361, 920)
+
+[node name="Carriage" type="AspectRatioContainer"]
+custom_minimum_size = Vector2(0, 215)
+offset_right = 750.0
+offset_bottom = 500.0
+size_flags_horizontal = 3
+ratio = 1.5
+stretch_mode = 2
+script = ExtResource("4")
+
+[node name="Map" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Illustration" type="TextureRect" parent="Map"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1")
+expand_mode = 1
+stretch_mode = 0
+
+[node name="Anna" parent="Map" instance=ExtResource("3")]
+layout_mode = 1
+anchor_left = 0.30
+anchor_top = 0.62
+anchor_right = 0.35
+anchor_bottom = 0.83
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Mikhail" parent="Map" instance=ExtResource("3")]
+layout_mode = 1
+anchor_left = 0.52
+anchor_top = 0.44
+anchor_right = 0.57
+anchor_bottom = 0.65
+offset_right = 0.0
+offset_bottom = 0.0
+texture = SubResource("Mikhail")
+
+[node name="Elena" parent="Map" instance=ExtResource("3")]
+layout_mode = 1
+anchor_left = 0.75
+anchor_top = 0.25
+anchor_right = 0.80
+anchor_bottom = 0.46
+offset_right = 0.0
+offset_bottom = 0.0
+texture = SubResource("Elena")
+
+[node name="Seat18" parent="Map" instance=ExtResource("2")]
+layout_mode = 1
+anchor_left = 0.43
+anchor_top = 0.34
+anchor_right = 0.43
+anchor_bottom = 0.34
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 24.0
+
+[node name="Seat06" parent="Map" instance=ExtResource("2")]
+layout_mode = 1
+anchor_left = 0.22
+anchor_top = 0.58
+anchor_right = 0.22
+anchor_bottom = 0.58
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 24.0
+request_id = "blanket"
+number = "02"
+description = "Нужен плед · место 06"
+
+[node name="Seat24" parent="Map" instance=ExtResource("2")]
+layout_mode = 1
+anchor_left = 0.65
+anchor_top = 0.57
+anchor_right = 0.65
+anchor_bottom = 0.57
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 24.0
+request_id = "table"
+number = "03"
+description = "Уборка столика · место 24"
+
+[node name="Seat12" parent="Map" instance=ExtResource("2")]
+layout_mode = 1
+anchor_left = 0.64
+anchor_top = 0.17
+anchor_right = 0.64
+anchor_bottom = 0.17
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 24.0
+request_id = "children"
+number = "04"
+description = "Пассажиру мешают дети · место 12"
+
+[node name="Seat28" parent="Map" instance=ExtResource("2")]
+layout_mode = 1
+anchor_left = 0.87
+anchor_top = 0.34
+anchor_right = 0.87
+anchor_bottom = 0.34
+offset_left = -26.0
+offset_top = -24.0
+offset_right = 26.0
+offset_bottom = 24.0
+request_id = "seat"
+number = "05"
+description = "Пассажир не на своём месте · место 28"
+
+[node name="Select" parent="Map/Seat06" index="1"]
+text = "02"
+
+[node name="Select" parent="Map/Seat24" index="1"]
+text = "03"
+
+[node name="Select" parent="Map/Seat12" index="1"]
+text = "04"
+
+[node name="Select" parent="Map/Seat28" index="1"]
+text = "05"
+
+[connection signal="request_selected" from="Map/Seat18" to="." method="_on_request_selected"]
+[connection signal="request_selected" from="Map/Seat06" to="." method="_on_request_selected"]
+[connection signal="request_selected" from="Map/Seat24" to="." method="_on_request_selected"]
+[connection signal="request_selected" from="Map/Seat12" to="." method="_on_request_selected"]
+[connection signal="request_selected" from="Map/Seat28" to="." method="_on_request_selected"]
+
+[editable path="Map/Seat06"]
+[editable path="Map/Seat24"]
+[editable path="Map/Seat12"]
+[editable path="Map/Seat28"]
