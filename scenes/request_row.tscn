@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/request_row.gd" id="1"]
+[ext_resource type="Theme" path="res://theme/train_theme.tres" id="2"]
+
+[node name="RequestRow" type="Button"]
+custom_minimum_size = Vector2(0, 82)
+offset_right = 330.0
+offset_bottom = 90.0
+size_flags_horizontal = 3
+theme = ExtResource("2")
+theme_type_variation = &"RowButton"
+text = "01  Чемодан в проходе\nМесто 18 · ожидает"
+alignment = 0
+autowrap_mode = 3
+mouse_default_cursor_shape = 2
+script = ExtResource("1")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

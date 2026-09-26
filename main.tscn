@@ -1,12 +1,63 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1"]
+[ext_resource type="Theme" path="res://theme/train_theme.tres" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/start_screen.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/trip_screen.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/decision.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/debrief.tscn" id="6"]
 
-[node name="DepartureScreen" type="Control"]
-layout_mode=3
-anchors_preset=15
-anchor_right=1.0
-anchor_bottom=1.0
-grow_horizontal=2
-grow_vertical=2
-script=ExtResource("1")
+[node name="HeadOfTrain" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.88, 0.89, 0.85, 1)
+
+[node name="Screens" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+tabs_visible = false
+all_tabs_in_front = false
+
+[node name="StartScreen" parent="Screens" instance=ExtResource("3")]
+layout_mode = 2
+
+[node name="TripScreen" parent="Screens" instance=ExtResource("4")]
+layout_mode = 2
+
+[node name="Decision" parent="Screens" instance=ExtResource("5")]
+layout_mode = 2
+
+[node name="Debrief" parent="Screens" instance=ExtResource("6")]
+layout_mode = 2
+
+[node name="APIRequest" type="HTTPRequest" parent="."]
+timeout = 8.0
+body_size_limit = 65536
+
+[connection signal="start_requested" from="Screens/StartScreen" to="." method="_on_start"]
+[connection signal="health_requested" from="Screens/StartScreen" to="." method="_on_health"]
+[connection signal="demo_requested" from="Screens/StartScreen" to="." method="_on_demo"]
+[connection signal="request_selected" from="Screens/TripScreen" to="." method="_on_request_selected"]
+[connection signal="back_requested" from="Screens/TripScreen" to="." method="_on_back_to_start"]
+[connection signal="choice_selected" from="Screens/Decision" to="." method="_on_choice_selected"]
+[connection signal="cancelled" from="Screens/Decision" to="." method="_on_back_to_trip"]
+[connection signal="back_requested" from="Screens/Debrief" to="." method="_on_back_to_trip"]
+[connection signal="request_completed" from="APIRequest" to="." method="_on_response"]
