@@ -57,7 +57,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.80, 0.50, 1)
 theme_override_font_sizes/font_size = 13
-text = "НАЧАЛЬНИК РЕЙСА  /  ДЕМО · ЛОКАЛЬНЫЕ ДАННЫЕ"
+text = "НАЧАЛЬНИК РЕЙСА · ПЕРВЫЙ СЦЕНАРИЙ · ЧЕРНОВИК"
 autowrap_mode = 3
 
 [node name="Route" type="Label" parent="Margin/Content/Header/Content"]
@@ -72,7 +72,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.79, 0.84, 0.81, 1)
 theme_override_font_sizes/font_size = 13
-text = "Демо без запроса старта · данные не сохраняются"
+text = "Загружаем сохранённую попытку…"
 autowrap_mode = 3
 
 [node name="Metrics" type="GridContainer" parent="Margin/Content"]
@@ -84,9 +84,10 @@ columns = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Text" type="Label" parent="Margin/Content/Metrics/Time"]
+[node name="TimeText" type="Label" parent="Margin/Content/Metrics/Time"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "До прибытия  04:32\nВремя зафиксировано · демо"
+text = "Без ограничения времени"
 autowrap_mode = 3
 
 [node name="Loyalty" type="PanelContainer" parent="Margin/Content/Metrics"]
@@ -96,16 +97,17 @@ size_flags_horizontal = 3
 [node name="Content" type="VBoxContainer" parent="Margin/Content/Metrics/Loyalty"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Margin/Content/Metrics/Loyalty/Content"]
+[node name="LoyaltyText" type="Label" parent="Margin/Content/Metrics/Loyalty/Content"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Лояльность  78 / 100"
+text = "Лояльность: —"
 autowrap_mode = 3
 
 [node name="LoyaltyValue" type="ProgressBar" parent="Margin/Content/Metrics/Loyalty/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-value = 78.0
+value = 0.0
 show_percentage = false
 
 [node name="Safety" type="PanelContainer" parent="Margin/Content/Metrics"]
@@ -115,16 +117,17 @@ size_flags_horizontal = 3
 [node name="Content" type="VBoxContainer" parent="Margin/Content/Metrics/Safety"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Margin/Content/Metrics/Safety/Content"]
+[node name="SafetyText" type="Label" parent="Margin/Content/Metrics/Safety/Content"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Безопасность  92 / 100"
+text = "Безопасность: —"
 autowrap_mode = 3
 
 [node name="SafetyValue" type="ProgressBar" parent="Margin/Content/Metrics/Safety/Content"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
-value = 92.0
+value = 0.0
 show_percentage = false
 
 [node name="MainGrid" type="GridContainer" parent="Margin/Content"]
@@ -137,10 +140,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.9
 
-[node name="Title" type="Label" parent="Margin/Content/MainGrid/CarriagePanel"]
+[node name="CarriageTitle" type="Label" parent="Margin/Content/MainGrid/CarriagePanel"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Section"
-text = "01 · Вагон «Стандарт»"
+text = "Вагон № 2"
 autowrap_mode = 3
 
 [node name="Carriage" parent="Margin/Content/MainGrid/CarriagePanel" instance=ExtResource("3")]
@@ -205,6 +209,7 @@ layout_mode = 2
 text = "Далее"
 
 [node name="CrewTitle" type="Label" parent="Margin/Content"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Section"
 text = "Бригада рейса"
@@ -260,7 +265,7 @@ text = "Обслуживает · вагон 01"
 [node name="Footer" type="Label" parent="Margin/Content"]
 layout_mode = 2
 theme_type_variation = &"Small"
-text = "A1 · Один активный вагон. Шкалы и время — образцы, без расчёта очков и симуляции."
+text = "Один сценарий. Шкалы и фактический исход приходят с сервера; полный рейс — следующий этап."
 autowrap_mode = 3
 
 [node name="BackButton" type="Button" parent="Margin/Content"]

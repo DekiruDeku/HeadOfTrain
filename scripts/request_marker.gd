@@ -12,3 +12,11 @@ func _ready() -> void:
 
 func _on_pressed() -> void:
 	request_selected.emit(request_id)
+
+func bind_incident(data: Dictionary) -> void:
+	request_id = data.id
+	description = data.text
+	# Completion means a report exists, not necessarily a resolved incident.
+	%Select.text = "Р" if data.state == "completed" else "!"
+	%Select.tooltip_text = description
+	%Select.accessibility_name = "Открыть разбор" if data.state == "completed" else "Открыть обращение: " + description

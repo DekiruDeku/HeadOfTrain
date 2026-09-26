@@ -18,64 +18,122 @@ script = ExtResource("1")
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 24
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_bottom = 20
 
 [node name="Panel" type="PanelContainer" parent="Margin"]
 layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="Margin/Panel"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 14
 
 [node name="Badge" type="Label" parent="Margin/Panel/Content"]
 layout_mode = 2
 theme_type_variation = &"Small"
-text = "КРАТКИЙ РАЗБОР  /  ДЕМО A1"
+text = "КРАТКИЙ РАЗБОР · ДАННЫЕ СЕРВЕРА · ЧЕРНОВИК"
 autowrap_mode = 3
 
 [node name="Title" type="Label" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Чемодан в проходе"
+text = "Разбор · Чемодан в проходе"
 autowrap_mode = 3
+
+[node name="Summary" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Здесь появится подтверждённый результат."
+autowrap_mode = 3
+
+[node name="Facts" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Факты и шкалы сервера"
+autowrap_mode = 3
+
+[node name="Pager" type="HBoxContainer" parent="Margin/Panel/Content"]
+layout_mode = 2
+
+[node name="Previous" type="Button" parent="Margin/Panel/Content/Pager"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "←"
+accessibility_name = "Предыдущее решение"
+custom_minimum_size = Vector2(48, 44)
+
+[node name="PageLabel" type="Label" parent="Margin/Panel/Content/Pager"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
+text = "Решение 1 / 1"
+autowrap_mode = 3
+
+[node name="Next" type="Button" parent="Margin/Panel/Content/Pager"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "→"
+accessibility_name = "Следующее решение"
+custom_minimum_size = Vector2(48, 44)
 
 [node name="ChoiceTitle" type="Label" parent="Margin/Panel/Content"]
 layout_mode = 2
 theme_type_variation = &"Section"
-text = "Выбранный вариант"
+text = "Ваше действие"
 autowrap_mode = 3
 
 [node name="Choice" type="Label" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Уточнить обстоятельства и предложить помощь с размещением багажа."
-autowrap_mode = 3
-
-[node name="EffectTitle" type="Label" parent="Margin/Panel/Content"]
-layout_mode = 2
-theme_type_variation = &"Section"
-text = "Что показывает этот экран"
+text = "Текст подтверждённого выбора"
 autowrap_mode = 3
 
 [node name="Effect" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Выбранный вариант показан выше. В демонстрации нет оценки решения, начисления очков или изменения шкал."
+text = "Последствия из истории сервера"
+autowrap_mode = 3
+
+[node name="Explanation" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Объяснение решения"
+autowrap_mode = 3
+
+[node name="Recommendation" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Рекомендация сервера"
 autowrap_mode = 3
 
 [node name="Persistence" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"Muted"
-text = "Выбор исчезнет после перезагрузки. Это предварительный просмотр: учебные последствия и сохранение разбора ещё не подключены."
+theme_type_variation = &"Small"
+text = "Состояние сохранения"
+autowrap_mode = 3
+
+[node name="Continue" type="Button" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+text = "Продолжить диалог"
 autowrap_mode = 3
 
 [node name="Back" type="Button" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_type_variation = &"RowButton"
 text = "Вернуться к вагону"
 autowrap_mode = 3
 
+[connection signal="pressed" from="Margin/Panel/Content/Pager/Previous" to="." method="_on_previous"]
+[connection signal="pressed" from="Margin/Panel/Content/Pager/Next" to="." method="_on_next"]
+[connection signal="pressed" from="Margin/Panel/Content/Continue" to="." method="_on_continue"]
 [connection signal="pressed" from="Margin/Panel/Content/Back" to="." method="_on_back"]

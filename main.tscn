@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1"]
 [ext_resource type="Theme" path="res://theme/train_theme.tres" id="2"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" path="res://scenes/trip_screen.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/decision.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/debrief.tscn" id="6"]
+[ext_resource type="Script" path="res://scripts/session_api.gd" id="7"]
+[ext_resource type="Script" path="res://scripts/ui_diagnostics.gd" id="8"]
 
 [node name="HeadOfTrain" type="Control"]
 layout_mode = 3
@@ -25,39 +27,80 @@ anchor_bottom = 1.0
 mouse_filter = 2
 color = Color(0.88, 0.89, 0.85, 1)
 
-[node name="Screens" type="TabContainer" parent="."]
+[node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Connection" type="PanelContainer" parent="Layout"]
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Layout/Connection"]
+layout_mode = 2
+
+[node name="ConnectionText" type="Label" parent="Layout/Connection/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Small"
+text = "Восстанавливаем сохранённую попытку…"
+autowrap_mode = 3
+
+[node name="Retry" type="Button" parent="Layout/Connection/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "Восстановить связь"
+autowrap_mode = 3
+
+[node name="Screens" type="TabContainer" parent="Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 current_tab = 0
 tabs_visible = false
 all_tabs_in_front = false
 
-[node name="StartScreen" parent="Screens" instance=ExtResource("3")]
+[node name="StartScreen" parent="Layout/Screens" instance=ExtResource("3")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TripScreen" parent="Screens" instance=ExtResource("4")]
+[node name="TripScreen" parent="Layout/Screens" instance=ExtResource("4")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Decision" parent="Screens" instance=ExtResource("5")]
+[node name="Decision" parent="Layout/Screens" instance=ExtResource("5")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Debrief" parent="Screens" instance=ExtResource("6")]
+[node name="Debrief" parent="Layout/Screens" instance=ExtResource("6")]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="APIRequest" type="HTTPRequest" parent="."]
+[node name="SessionAPI" type="Node" parent="."]
+script = ExtResource("7")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="SessionAPI"]
 timeout = 8.0
-body_size_limit = 65536
+body_size_limit = 1048576
 
-[connection signal="start_requested" from="Screens/StartScreen" to="." method="_on_start"]
-[connection signal="health_requested" from="Screens/StartScreen" to="." method="_on_health"]
-[connection signal="demo_requested" from="Screens/StartScreen" to="." method="_on_demo"]
-[connection signal="request_selected" from="Screens/TripScreen" to="." method="_on_request_selected"]
-[connection signal="back_requested" from="Screens/TripScreen" to="." method="_on_back_to_start"]
-[connection signal="choice_selected" from="Screens/Decision" to="." method="_on_choice_selected"]
-[connection signal="cancelled" from="Screens/Decision" to="." method="_on_back_to_trip"]
-[connection signal="back_requested" from="Screens/Debrief" to="." method="_on_back_to_trip"]
-[connection signal="request_completed" from="APIRequest" to="." method="_on_response"]
+[node name="UIDiagnostics" type="Node" parent="."]
+script = ExtResource("8")
+
+[connection signal="pressed" from="Layout/Connection/Content/Retry" to="." method="_on_health"]
+[connection signal="start_requested" from="Layout/Screens/StartScreen" to="." method="_on_start"]
+[connection signal="health_requested" from="Layout/Screens/StartScreen" to="." method="_on_health"]
+[connection signal="request_selected" from="Layout/Screens/TripScreen" to="." method="_on_request_selected"]
+[connection signal="back_requested" from="Layout/Screens/TripScreen" to="." method="_on_back_to_start"]
+[connection signal="choice_selected" from="Layout/Screens/Decision" to="." method="_on_choice_selected"]
+[connection signal="cancelled" from="Layout/Screens/Decision" to="." method="_on_back_to_trip"]
+[connection signal="back_requested" from="Layout/Screens/Debrief" to="." method="_on_back_to_trip"]
+[connection signal="continue_requested" from="Layout/Screens/Debrief" to="." method="_on_continue"]
+[connection signal="changed" from="SessionAPI" to="." method="_on_api_changed"]
+[connection signal="state_received" from="SessionAPI" to="." method="_on_state_received"]
+[connection signal="report_received" from="SessionAPI" to="." method="_on_report_received"]
+[connection signal="request_completed" from="SessionAPI/HTTPRequest" to="SessionAPI" method="_on_response"]

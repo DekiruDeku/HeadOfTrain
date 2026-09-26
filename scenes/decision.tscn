@@ -32,7 +32,7 @@ theme_override_constants/separation = 18
 [node name="Badge" type="Label" parent="Margin/Panel/Content"]
 layout_mode = 2
 theme_type_variation = &"Small"
-text = "ДЕМО РЕШЕНИЯ  /  ЛОКАЛЬНЫЕ ДАННЫЕ"
+text = "ПЕРВЫЙ СЦЕНАРИЙ · УЧЕБНЫЙ ЧЕРНОВИК"
 autowrap_mode = 3
 
 [node name="Title" type="Label" parent="Margin/Panel/Content"]
@@ -46,7 +46,7 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Muted"
-text = "Вагон 01 · место 18 · демонстрация"
+text = "Вагон № 2 · условие из сохранённой попытки"
 autowrap_mode = 3
 
 [node name="Description" type="Label" parent="Margin/Panel/Content"]
@@ -56,9 +56,10 @@ text = "Пассажир оставил чемодан в проходе и пе
 autowrap_mode = 3
 
 [node name="Note" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Muted"
-text = "Выберите вариант, чтобы посмотреть макет разбора. Это проверка интерфейса, без оценки правильности и отправки решения на сервер."
+text = "Выберите действие. Последствия и оценки определяет сервер."
 autowrap_mode = 3
 
 [node name="Choice1" type="Button" parent="Margin/Panel/Content"]

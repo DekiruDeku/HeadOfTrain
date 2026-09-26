@@ -1,99 +1,82 @@
 extends Control
-## A1: navigation and the existing API only. Every node is saved in a scene.
-
-var pending := ""
-var demo_requests: Array = []
-var return_focus: Control
-@onready var screens: TabContainer = $Screens
-@onready var start: ScrollContainer = $Screens/StartScreen
-@onready var trip: ScrollContainer = $Screens/TripScreen
-@onready var decision: ScrollContainer = $Screens/Decision
-@onready var debrief: ScrollContainer = $Screens/Debrief
-@onready var http: HTTPRequest = $APIRequest
+## All screens and components are saved in main.tscn and nested scenes.
+@onready var screens: TabContainer = %Screens
+@onready var start = %StartScreen
+@onready var trip = %TripScreen
+@onready var decision = %Decision
+@onready var debrief = %Debrief
+@onready var api = $SessionAPI
 
 func _ready() -> void:
-	demo_requests = JSON.parse_string(FileAccess.get_file_as_string("res://data/demo_requests.json"))
-	_request("health")
+	api.bootstrap()
 
-func _api_origin() -> String:
-	if OS.has_feature("web"):
-		return str(JavaScriptBridge.eval("window.location.origin"))
-	return OS.get_environment("HEAD_OF_TRAIN_API").trim_suffix("/") if OS.has_environment("HEAD_OF_TRAIN_API") else "http://127.0.0.1:8765"
+func _on_api_changed() -> void:
+	%ConnectionText.text = api.message + ("\n" + api.notice if not api.notice.is_empty() else "")
+	%ConnectionText.theme_type_variation = &"Error" if not api.error_code.is_empty() else &"Small"
+	%Retry.visible = not api.error_code.is_empty()
+	%Retry.disabled = api.busy
+	var locked: bool = not api.ready_for_input or api.busy
+	start.set_state(api.trip, api.message, locked)
+	decision.set_locked(locked)
+	trip.set_locked(locked)
+	debrief.set_locked(locked)
 
-func _request(action: String) -> void:
-	if not pending.is_empty():
+func _on_state_received(source: String) -> void:
+	if api.trip.is_empty():
+		screens.current_tab = 0
 		return
-	pending = action
-	start.set_pending(action)
-	var url := _api_origin() + ("/api/health" if action == "health" else "/api/trips/start")
-	var method := HTTPClient.METHOD_GET if action == "health" else HTTPClient.METHOD_POST
-	var error := http.request(url, ["Content-Type: application/json"], method, "" if action == "health" else "{}")
-	if error != OK:
-		pending = ""
-		start.show_error("Не удалось отправить запрос. Повторите.")
-
-func _on_response(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	var action := pending
-	pending = ""
-	if result != HTTPRequest.RESULT_SUCCESS or response_code < 200 or response_code >= 300:
-		start.show_error("Нет ответа. Проверьте связь и нажмите «Начать рейс» повторно.")
-		return
-	var data: Variant = JSON.parse_string(body.get_string_from_utf8())
-	if not data is Dictionary or data.get("ok") != true:
-		start.show_error("Некорректный ответ сервера. Повторите.")
-		return
-	if action == "start" and (not data.get("trip_id") is String or str(data.get("trip_id")).is_empty() or data.get("status") != "started"):
-		start.show_error("Сервер не подтвердил рейс. Повторите.")
-		return
-	if action == "health":
-		start.show_success("Связь установлена. Можно начинать.")
+	trip.show_trip(api.trip)
+	if api.trip.status == "completed":
+		# Do not show an old report while the saved report is loading.
+		screens.current_tab = 1
+	elif source == "action":
+		debrief.present_effect(api.trip.history.back(), api.trip)
+		screens.current_tab = 3
 	else:
-		var confirmation := "Рейс № %s · отправление подтверждено API" % str(data["trip_id"])
-		start.show_success(confirmation)
-		_open_trip(confirmation + ". Игровые данные — локальное демо.")
-	print("API %s HTTP %s: %s" % [action, response_code, JSON.stringify(data)])
+		screens.current_tab = 1
+	trip.scroll_vertical = 0
+
+func _on_report_received() -> void:
+	debrief.present_report(api.report)
+	screens.current_tab = 3
 
 func _on_start() -> void:
-	_request("start")
+	if not api.trip.is_empty() and api.trip.status == "in_progress":
+		_on_back_to_trip()
+		return
+	api.start_attempt(start.selected_condition(), not api.trip.is_empty())
 
 func _on_health() -> void:
-	_request("health")
-
-func _on_demo() -> void:
-	_open_trip("Демо без запроса старта · данные не сохраняются")
-
-func _open_trip(confirmation: String) -> void:
-	trip.show_trip(demo_requests, confirmation)
-	screens.current_tab = 1
-	trip.scroll_vertical = 0
+	api.retry()
 
 func _on_back_to_start() -> void:
 	screens.current_tab = 0
-	start.start_button.grab_focus()
+	start.scroll_vertical = 0
 
-func _on_request_selected(request_id: String) -> void:
-	for data in demo_requests:
-		if data["id"] == request_id:
-			return_focus = get_viewport().gui_get_focus_owner()
-			decision.present(data)
+func _on_request_selected(incident_id: String) -> void:
+	if not api.ready_for_input:
+		return
+	if api.trip.status == "completed":
+		if not api.report.is_empty():
+			_on_report_received()
+		return
+	for incident in api.trip.incidents:
+		if incident.id == incident_id:
+			decision.present(api.trip, incident)
 			screens.current_tab = 2
-			decision.get_node("%Choice1").grab_focus()
-			decision.scroll_vertical = 0
 			return
 
-func _on_choice_selected(request_id: String, choice_index: int) -> void:
-	for data in demo_requests:
-		if data["id"] == request_id:
-			debrief.present(data["title"], data["choices"][choice_index])
-			screens.current_tab = 3
-			debrief.get_node("%Back").grab_focus()
-			debrief.scroll_vertical = 0
-			return
+func _on_choice_selected(incident_id: String, action_id: String) -> void:
+	api.choose(incident_id, action_id)
 
 func _on_back_to_trip() -> void:
 	screens.current_tab = 1
-	if is_instance_valid(return_focus) and return_focus.is_visible_in_tree():
-		return_focus.grab_focus()
+
+func _on_continue() -> void:
+	if api.trip.get("status") == "in_progress":
+		_on_request_selected(api.trip.incidents[0].id)
+	else:
+		_on_back_to_start()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and screens.current_tab >= 2:
