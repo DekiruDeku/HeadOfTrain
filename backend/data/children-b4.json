@@ -1,0 +1,468 @@
+{
+  "id": "children-disturb",
+  "version": "b4-1.0.0-draft",
+  "title": "Пассажиру мешают дети",
+  "content_status": "draft",
+  "verification_status": "unverified_missing_dataset",
+  "draft_note": "Демонстрационный черновик; датасет и правила обучения не предоставлены. Реплики, допустимость решений, оценки и время не подтверждены нормативно.",
+  "sources": [
+    {
+      "file": "MVPHeadOfTrain.txt",
+      "section": "6. Собрать содержание одного рейса",
+      "status": "provided_scope_not_training_standard"
+    },
+    {
+      "file": "ConceptHeadOfTrain.txt",
+      "section": "Пассажиру мешают дети",
+      "dataset_reference": "№ 10 упомянут в концепте; оригинал отсутствует",
+      "status": "concept_only_dataset_missing"
+    }
+  ],
+  "condition_schema": {
+    "relocation": [
+      "available",
+      "unavailable"
+    ]
+  },
+  "default_conditions": {
+    "relocation": "available"
+  },
+  "initial_node": "opening",
+  "initial_facts": {
+    "conditions_checked": false,
+    "agreement_verified": false
+  },
+  "nodes": {
+    "opening": {
+      "text": "Пассажиру мешает шум; он требует пересадить семью. Родители тоже ждут помощи.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "clarify",
+          "text": "Спокойно выслушать обе стороны и проверить варианты пересадки.",
+          "text_status": "draft",
+          "next": "options",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "conditions_checked": true
+            }
+          },
+          "explanation": "Уточнены интересы обеих сторон и наличие места до обещаний.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "check_before_promise",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "promise_move",
+          "text": "Сразу пообещать пересадку, затем проверить места.",
+          "text_status": "draft",
+          "next": "promise_result",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "promised_before_check": true
+            }
+          },
+          "explanation": "Обещание дано до проверки; последствия зависят от наличия подходящего места.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "check_before_promise",
+              "result": "missed"
+            }
+          ]
+        },
+        {
+          "id": "blame_family",
+          "text": "Публично обвинить родителей.",
+          "text_status": "draft",
+          "next": "conflict",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -4,
+              "family": -15
+            }
+          },
+          "explanation": "Обвинение усилило спор. Ни интересы семьи, ни просьба о тишине не учтены.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "promise_result": {
+      "branches": [
+        {
+          "conditions": {
+            "relocation": "available"
+          },
+          "next": "promise_available"
+        },
+        {
+          "conditions": {
+            "relocation": "unavailable"
+          },
+          "next": "promise_unavailable"
+        }
+      ]
+    },
+    "promise_available": {
+      "text": "Подходящее место нашлось. Обещание можно выполнить с согласия пассажира.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "fulfil_promise",
+          "text": "Уточнить согласие и помочь пересесть.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": 3,
+              "family": 2
+            }
+          },
+          "explanation": "Место нашлось, но удачное совпадение не заменяет предварительной проверки.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "abandon",
+          "text": "Не выполнять обещание.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -10,
+              "family": -4
+            }
+          },
+          "explanation": "Место есть, но обещание не выполнено. Доверие снижается.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "promise_unavailable": {
+      "text": "Подходящих свободных мест нет. Обещание пересадки невыполнимо.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "repair_promise",
+          "text": "Признать ошибку и согласовать более тихое занятие для детей.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -10,
+              "family": -3
+            }
+          },
+          "explanation": "Невыполнимое обещание снизило доверие. Признание ошибки и согласованный вариант позволяют продолжить помощь.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "insist_move",
+          "text": "Настаивать на пересадке без места.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -15,
+              "family": -12
+            }
+          },
+          "explanation": "Без подходящего места пересадка не выполнена, конфликт усилился.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "options": {
+      "branches": [
+        {
+          "conditions": {
+            "relocation": "available"
+          },
+          "next": "options_available"
+        },
+        {
+          "conditions": {
+            "relocation": "unavailable"
+          },
+          "next": "options_unavailable"
+        }
+      ]
+    },
+    "options_available": {
+      "text": "Подходящее место есть. Можно предложить добровольную пересадку жалующемуся пассажиру или договориться на месте.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "offer_move",
+          "text": "С согласия пассажира помочь ему пересесть.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "relocation": "available"
+          },
+          "effects": {
+            "facts": {
+              "solution": "relocation"
+            },
+            "loyalty_deltas": {
+              "complainant": 5,
+              "family": 3
+            }
+          },
+          "explanation": "Пересадка предложена после проверки и по согласию; семья не обвиняется.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "agree_quiet",
+          "text": "Договориться с семьёй о более тихом занятии, согласовать это с пассажиром.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "solution": "quiet_activity"
+            },
+            "loyalty_deltas": {
+              "complainant": 2,
+              "family": 4
+            }
+          },
+          "explanation": "Учтены обе стороны; в этой демонстрации семья согласилась на тихое занятие.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "options_unavailable": {
+      "text": "Подходящего свободного места нет. В демонстрации семья готова договориться о тихом занятии.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "offer_move",
+          "text": "Предложить пересадку.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "relocation": "available"
+          },
+          "effects": {},
+          "explanation": "Пересадка недоступна без подходящего места.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "agree_quiet",
+          "text": "Обсудить тихое занятие и согласовать решение с обеими сторонами.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "solution": "quiet_activity"
+            },
+            "loyalty_deltas": {
+              "complainant": 2,
+              "family": 4
+            }
+          },
+          "explanation": "Найден выполнимый вариант без пересадки. Наличие детского набора или зоны не предполагается.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "dismiss",
+          "text": "Попросить пассажира просто потерпеть и уйти.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -10,
+              "family": -2
+            }
+          },
+          "explanation": "Отсутствие места не отменяет потребности в помощи; соглашение не достигнуто.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "verify": {
+      "text": "Вариант выполнен. Как завершить?",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "verify_agreement",
+          "text": "Убедиться, что обе стороны приняли результат.",
+          "text_status": "draft",
+          "next": "resolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": 3,
+              "family": 3
+            },
+            "facts": {
+              "agreement_verified": true
+            }
+          },
+          "explanation": "В этой ситуации обе стороны подтвердили, что договорённость помогла.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "verify_result",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "leave_unchecked",
+          "text": "Уйти, не уточняя результат.",
+          "text_status": "draft",
+          "next": "unchecked",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "complainant": -3
+            }
+          },
+          "explanation": "Не выяснено, помогло ли решение. Обращение закрыто без подтверждения.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "resolved": {
+      "text": "Обе стороны подтвердили выполненное решение.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "resolved",
+      "recommendation": "Проверяйте возможность пересадки до обещания и учитывайте обе стороны.",
+      "successful": true
+    },
+    "conflict": {
+      "text": "Публичное обвинение усилило конфликт.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "conflict",
+      "recommendation": "Обсуждайте потребности без обвинений.",
+      "successful": false
+    },
+    "unresolved": {
+      "text": "Согласованное решение не выполнено.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "unresolved",
+      "recommendation": "При отсутствии мест ищите выполнимую договорённость.",
+      "successful": false
+    },
+    "unchecked": {
+      "text": "Результат договорённости не проверен.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "not_verified",
+      "recommendation": "Уточните результат у обеих сторон.",
+      "successful": false
+    },
+    "reaction_timeout": {
+      "text": "Сотрудник не прибыл до срока реакции.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "reaction_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    },
+    "trip_timeout": {
+      "text": "Рейс закончился, а решение не доведено до результата.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "trip_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    }
+  },
+  "critical_nodes": {},
+  "reaction_timeout": {
+    "id": "reaction_timeout",
+    "text": "Сотрудник не прибыл до срока реакции.",
+    "text_status": "draft",
+    "next": "reaction_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "complainant": -8,
+        "family": -8
+      }
+    },
+    "explanation": "Сотрудник не прибыл до срока реакции. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "reaction_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "trip_timeout": {
+    "id": "trip_timeout",
+    "text": "Рейс закончился, а решение не доведено до результата.",
+    "text_status": "draft",
+    "next": "trip_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "complainant": -8,
+        "family": -8
+      }
+    },
+    "explanation": "Рейс закончился, а решение не доведено до результата. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "trip_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "applicable_competencies": [
+    "communication",
+    "prioritization"
+  ]
+}

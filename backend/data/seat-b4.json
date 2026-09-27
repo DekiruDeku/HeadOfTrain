@@ -1,0 +1,369 @@
+{
+  "id": "wrong-seat",
+  "version": "b4-1.0.0-draft",
+  "title": "Пассажир не на своём месте",
+  "content_status": "draft",
+  "verification_status": "unverified_missing_dataset",
+  "draft_note": "Демонстрационный черновик; датасет и правила обучения не предоставлены. Реплики, допустимость решений, оценки и время не подтверждены нормативно.",
+  "sources": [
+    {
+      "file": "MVPHeadOfTrain.txt",
+      "section": "6. Собрать содержание одного рейса",
+      "status": "provided_scope_not_training_standard"
+    },
+    {
+      "file": "ConceptHeadOfTrain.txt",
+      "section": "Обучение через рабочие ситуации; точного сценария о месте в концепте нет",
+      "dataset_reference": "Название и существенное условие заданы MVP; номер ситуации неизвестен",
+      "status": "concept_only_dataset_missing"
+    }
+  ],
+  "condition_schema": {
+    "seat_reason": [
+      "mistake",
+      "intentional"
+    ]
+  },
+  "default_conditions": {
+    "seat_reason": "mistake"
+  },
+  "initial_node": "opening",
+  "initial_facts": {
+    "conditions_checked": false,
+    "seat_verified": false
+  },
+  "nodes": {
+    "opening": {
+      "text": "На место пришёл пассажир с билетом, но там уже сидит другой человек. Причина пока не установлена.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "check_ticket",
+          "text": "Спокойно проверить билеты обоих пассажиров и выслушать объяснение.",
+          "text_status": "draft",
+          "next": "reason",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "conditions_checked": true
+            }
+          },
+          "explanation": "Проверка отличает ошибку в месте от намеренной пересадки без обвинения.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "check_before_promise",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "accuse",
+          "text": "Обвинить сидящего пассажира, не проверяя билеты.",
+          "text_status": "draft",
+          "next": "conflict",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": -12,
+              "seat-holder": -3
+            }
+          },
+          "explanation": "Обстоятельства не проверены, публичное обвинение усилило конфликт.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "leave_seated",
+          "text": "Разрешить остаться, не учитывая билет второго пассажира.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": 4,
+              "seat-holder": -15
+            }
+          },
+          "explanation": "Уступка одному оставила второго без решения; право на место не выяснено.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "reason": {
+      "branches": [
+        {
+          "conditions": {
+            "seat_reason": "mistake"
+          },
+          "next": "mistake"
+        },
+        {
+          "conditions": {
+            "seat_reason": "intentional"
+          },
+          "next": "intentional"
+        }
+      ]
+    },
+    "mistake": {
+      "text": "Пассажир перепутал номер вагона. Его указанное в билете место свободно в пределах двух активных вагонов.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "guide",
+          "text": "Объяснить ошибку без упрёка и помочь найти место по билету.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "seat_reason": "mistake"
+          },
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": 5,
+              "seat-holder": 4
+            },
+            "facts": {
+              "solution": "guided_to_ticket"
+            }
+          },
+          "explanation": "Ошибка исправлена конкретной помощью; обладатель занятого места может сесть.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "order_return",
+          "text": "Резко приказать вернуться на место по билету.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": -8,
+              "seat-holder": 2
+            },
+            "facts": {
+              "solution": "ordered_to_ticket"
+            }
+          },
+          "explanation": "Место освобождено, но резкость снизила доверие.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "intentional": {
+      "text": "Пассажир сознательно пересел ради удобства. Его место по билету свободно; согласованной пересадки в этой демонстрации нет.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "explain_return",
+          "text": "Объяснить ситуацию и помочь вернуться на место по билету.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "seat_reason": "intentional"
+          },
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": 2,
+              "seat-holder": 5
+            },
+            "facts": {
+              "solution": "return_to_ticket"
+            }
+          },
+          "explanation": "Учтены интересы обоих пассажиров, предложен конкретный доступный вариант.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "treat_as_mistake",
+          "text": "Помочь исправить случайную ошибку в номере.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "seat_reason": "mistake"
+          },
+          "effects": {},
+          "explanation": "Уже установлено, что пересадка намеренная; это не ошибка номера.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "endorse_move",
+          "text": "Оставить пересевшего пассажира на спорном месте.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": 4,
+              "seat-holder": -15
+            }
+          },
+          "explanation": "Причина известна, но интересы пассажира с билетом проигнорированы.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "verify": {
+      "text": "Пассажиры направлены к местам. Что проверить?",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "verify_seats",
+          "text": "Убедиться, что оба заняли свои места и вопрос закрыт.",
+          "text_status": "draft",
+          "next": "resolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seated-passenger": 3,
+              "seat-holder": 3
+            },
+            "facts": {
+              "seat_verified": true
+            }
+          },
+          "explanation": "Оба пассажира разместились, выполнение решения подтверждено.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "verify_result",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "leave_unchecked",
+          "text": "Уйти без проверки размещения.",
+          "text_status": "draft",
+          "next": "unchecked",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "seat-holder": -3
+            }
+          },
+          "explanation": "Направление к месту ещё не подтверждает, что спор разрешён.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "resolved": {
+      "text": "Оба пассажира размещены, результат проверен.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "resolved",
+      "recommendation": "Сначала проверьте обстоятельства, затем помогите и проверьте результат.",
+      "successful": true
+    },
+    "conflict": {
+      "text": "Обвинение без проверки усилило спор.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "conflict",
+      "recommendation": "Проверяйте билеты и объяснения до вывода о причине.",
+      "successful": false
+    },
+    "unresolved": {
+      "text": "Спор о месте остался нерешённым.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "unresolved",
+      "recommendation": "Учитывайте интересы обоих пассажиров.",
+      "successful": false
+    },
+    "unchecked": {
+      "text": "Размещение не подтверждено.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "not_verified",
+      "recommendation": "Убедитесь, что решение выполнено для обеих сторон.",
+      "successful": false
+    },
+    "reaction_timeout": {
+      "text": "Сотрудник не прибыл до срока реакции.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "reaction_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    },
+    "trip_timeout": {
+      "text": "Рейс закончился, а решение не доведено до результата.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "trip_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    }
+  },
+  "critical_nodes": {},
+  "reaction_timeout": {
+    "id": "reaction_timeout",
+    "text": "Сотрудник не прибыл до срока реакции.",
+    "text_status": "draft",
+    "next": "reaction_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "seated-passenger": -8,
+        "seat-holder": -8
+      }
+    },
+    "explanation": "Сотрудник не прибыл до срока реакции. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "reaction_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "trip_timeout": {
+    "id": "trip_timeout",
+    "text": "Рейс закончился, а решение не доведено до результата.",
+    "text_status": "draft",
+    "next": "trip_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "seated-passenger": -8,
+        "seat-holder": -8
+      }
+    },
+    "explanation": "Рейс закончился, а решение не доведено до результата. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "trip_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "applicable_competencies": [
+    "communication",
+    "prioritization"
+  ]
+}

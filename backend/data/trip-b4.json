@@ -1,0 +1,190 @@
+{
+  "carriages": [
+    {
+      "id": "carriage-1",
+      "name": "Вагон № 1",
+      "available": true
+    },
+    {
+      "id": "carriage-2",
+      "name": "Вагон № 2",
+      "available": true
+    }
+  ],
+  "route_points": [
+    {
+      "id": "c1-desk",
+      "carriage_id": "carriage-1"
+    },
+    {
+      "id": "c1-blanket",
+      "carriage_id": "carriage-1"
+    },
+    {
+      "id": "c1-door",
+      "carriage_id": "carriage-1"
+    },
+    {
+      "id": "c2-door",
+      "carriage_id": "carriage-2"
+    },
+    {
+      "id": "c2-luggage",
+      "carriage_id": "carriage-2"
+    },
+    {
+      "id": "c2-table",
+      "carriage_id": "carriage-2"
+    },
+    {
+      "id": "c2-desk",
+      "carriage_id": "carriage-2"
+    }
+  ],
+  "edge_seconds": [
+    4,
+    4,
+    6,
+    4,
+    5,
+    4
+  ],
+  "staff": [
+    {
+      "id": "staff-1",
+      "name": "Анна",
+      "route_point_id": "c1-desk"
+    },
+    {
+      "id": "staff-2",
+      "name": "Борис",
+      "route_point_id": "c2-desk"
+    },
+    {
+      "id": "staff-3",
+      "name": "Вера",
+      "route_point_id": "c2-luggage"
+    }
+  ],
+  "initial_loyalty": 50,
+  "id": "mvp-trip",
+  "version": "b4-1.0.0-draft",
+  "content_status": "draft",
+  "draft_note": "Демонстрационный черновик; датасет и правила обучения не предоставлены. Реплики, допустимость решений, оценки и время не подтверждены нормативно.",
+  "duration_seconds": 360,
+  "initial_safety": 100,
+  "scenario_files": [
+    "luggage-b4.json",
+    "children-b4.json",
+    "seat-b4.json"
+  ],
+  "default_conditions": {
+    "luggage_space": "free",
+    "relocation": "available",
+    "seat_reason": "mistake"
+  },
+  "balance_status": "provisional_pending_A4",
+  "incidents": [
+    {
+      "id": "luggage-1",
+      "scenario_id": "luggage-in-aisle",
+      "appears_at": 0,
+      "carriage_id": "carriage-2",
+      "route_point_id": "c2-luggage",
+      "marker_id": "luggage-marker",
+      "participant_ids": [
+        "luggage-owner"
+      ],
+      "reaction_seconds": 75,
+      "text": "Чемодан в проходе",
+      "text_status": "draft",
+      "type": "safety",
+      "priority": "high",
+      "service_seconds": null
+    },
+    {
+      "id": "blanket-1",
+      "carriage_id": "carriage-1",
+      "marker_id": "blanket-marker",
+      "type": "service",
+      "priority": "normal",
+      "route_point_id": "c1-blanket",
+      "participant_ids": [
+        "blanket-passenger"
+      ],
+      "text": "Пассажир просит плед.",
+      "text_status": "draft",
+      "reaction_seconds": 90,
+      "service_seconds": 20,
+      "success": {
+        "loyalty_delta": 8
+      },
+      "timeout": {
+        "loyalty_delta": -8
+      },
+      "appears_at": 0,
+      "success_explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+      "timeout_explanation": "Сотрудник не прибыл до срока: просьба осталась без помощи, доверие снизилось."
+    },
+    {
+      "id": "children-1",
+      "scenario_id": "children-disturb",
+      "appears_at": 100,
+      "carriage_id": "carriage-1",
+      "route_point_id": "c1-blanket",
+      "marker_id": "children-marker",
+      "participant_ids": [
+        "complainant",
+        "family"
+      ],
+      "reaction_seconds": 90,
+      "text": "Пассажиру мешают дети",
+      "text_status": "draft",
+      "type": "conflict",
+      "priority": "normal",
+      "service_seconds": null
+    },
+    {
+      "id": "table-1",
+      "carriage_id": "carriage-2",
+      "marker_id": "table-marker",
+      "type": "service",
+      "priority": "normal",
+      "route_point_id": "c2-table",
+      "participant_ids": [
+        "table-passenger"
+      ],
+      "text": "Пассажир просит убрать столик.",
+      "text_status": "draft",
+      "reaction_seconds": 100,
+      "service_seconds": 15,
+      "success": {
+        "loyalty_delta": 6
+      },
+      "timeout": {
+        "loyalty_delta": -6
+      },
+      "appears_at": 200,
+      "success_explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+      "timeout_explanation": "Сотрудник не прибыл до срока: просьба осталась без помощи, доверие снизилось."
+    },
+    {
+      "id": "seat-1",
+      "scenario_id": "wrong-seat",
+      "appears_at": 260,
+      "carriage_id": "carriage-2",
+      "route_point_id": "c2-table",
+      "marker_id": "seat-marker",
+      "participant_ids": [
+        "seated-passenger",
+        "seat-holder"
+      ],
+      "reaction_seconds": 90,
+      "text": "Пассажир не на своём месте",
+      "text_status": "draft",
+      "type": "conflict",
+      "priority": "normal",
+      "service_seconds": null
+    }
+  ]
+}

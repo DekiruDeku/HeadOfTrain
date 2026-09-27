@@ -1,0 +1,347 @@
+{
+  "id": "luggage-in-aisle",
+  "version": "1.0.0-draft",
+  "title": "Чемодан в проходе",
+  "content_status": "draft",
+  "sources": [
+    {
+      "file": "ConceptHeadOfTrain.txt",
+      "section": "Пример полноценного сценария: «Чемодан в проходе»",
+      "dataset_reference": "ситуация № 14, датасет не предоставлен"
+    },
+    {
+      "file": "MVPHeadOfTrain.txt",
+      "section": "3. Собрать один сценарий от начала до отчёта"
+    }
+  ],
+  "draft_note": "Дополнительные реплики, исходы, начальные шкалы, последствия и альтернативное место — демонстрационные черновики. Не являются нормативными требованиями. Требуют проверки по датасету.",
+  "initial_node": "opening",
+  "default_luggage_space": "free",
+  "allowed_luggage_space": [
+    "free",
+    "occupied"
+  ],
+  "initial_scales": {
+    "loyalty": {
+      "luggage-owner": 50
+    },
+    "overall_loyalty": null,
+    "safety": 100
+  },
+  "carriages": [
+    {
+      "id": "carriage-2",
+      "name": "Вагон № 2",
+      "available": true
+    }
+  ],
+  "incident": {
+    "id": "luggage-1",
+    "carriage_id": "carriage-2",
+    "marker_id": "luggage-marker",
+    "type": "safety",
+    "priority": "high",
+    "text": "В вагоне № 2 крупный чемодан затрудняет проход. Владелец находится рядом",
+    "text_status": "concept_excerpt"
+  },
+  "nodes": {
+    "opening": {
+      "text": "Владелец объясняет, что не хочет оставлять вещи далеко от себя.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "offer_help",
+          "text": "Объяснить необходимость свободного прохода и предложить помощь с размещением.",
+          "text_status": "concept_excerpt",
+          "next": "space",
+          "conditions": {},
+          "effects": {},
+          "explanation": "Сохраняется доверие и открывается поиск подходящего места.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "demand_removal",
+          "text": "Потребовать немедленно убрать вещи, не предложив места.",
+          "text_status": "concept_excerpt",
+          "next": "conflict",
+          "conditions": {},
+          "effects": {},
+          "explanation": "Пассажир возражает. Открывается конфликтная ветка; безопасность ещё не восстановлена.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "allow_luggage",
+          "text": "Разрешить оставить чемодан.",
+          "text_status": "concept_excerpt",
+          "next": "allowed",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": 4,
+            "safety_delta": -20,
+            "critical_marks": [
+              "aisle_left_blocked"
+            ]
+          },
+          "explanation": "Владелец доволен, но проход остаётся заблокированным. Снижается безопасность, проблема продолжает действовать.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "space": {
+      "branches": [
+        {
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "next": "space_free"
+        },
+        {
+          "conditions": {
+            "luggage_space": "occupied"
+          },
+          "next": "space_occupied"
+        }
+      ]
+    },
+    "space_free": {
+      "text": "Предусмотренное место для багажа свободно. Можно предложить его пассажиру и помочь с размещением.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "place_free",
+          "text": "Предложить свободное место и помочь перенести чемодан.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "effects": {
+            "facts": {
+              "placement": "regular"
+            }
+          },
+          "explanation": "Предложено конкретное свободное место, багаж размещён. Осталось убедиться, что проход освобождён.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "allow_luggage",
+          "text": "Разрешить оставить чемодан.",
+          "text_status": "concept_excerpt",
+          "next": "allowed",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": 4,
+            "safety_delta": -20,
+            "critical_marks": [
+              "aisle_left_blocked"
+            ]
+          },
+          "explanation": "Владелец доволен, но проход остаётся заблокированным. Снижается безопасность, проблема продолжает действовать.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "space_occupied": {
+      "text": "Место для багажа занято. Нужно проверить другое предусмотренное место или организовать дополнительную помощь.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "place_free",
+          "text": "Предложить свободное место и помочь перенести чемодан.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "effects": {},
+          "explanation": "Место должно быть свободно.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "check_alternative",
+          "text": "Проверить другое предусмотренное место и организовать помощь.",
+          "text_status": "draft",
+          "next": "alternative",
+          "conditions": {
+            "luggage_space": "occupied"
+          },
+          "effects": {
+            "facts": {
+              "alternative_checked": true
+            }
+          },
+          "explanation": "В демонстрационной ситуации найдено другое подходящее место. Его допустимость требует проверки по датасету.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "repeat_request",
+          "text": "Просто повторить требование убрать багаж.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": -10
+          },
+          "explanation": "Вы обозначили требование, но не предложили конкретного места для багажа. Пассажир не понял, как выполнить просьбу. В следующий раз предложите доступный вариант размещения и убедитесь, что проход освобождён",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "alternative": {
+      "text": "Другое предусмотренное место проверено и свободно. Можно помочь разместить чемодан.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "place_alternative",
+          "text": "Предложить проверенное место и помочь с размещением.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "occupied"
+          },
+          "effects": {
+            "facts": {
+              "placement": "alternative"
+            }
+          },
+          "explanation": "Багаж перенесён в проверенное альтернативное место. Необходимо проверить проход.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "allow_luggage",
+          "text": "Разрешить оставить чемодан.",
+          "text_status": "concept_excerpt",
+          "next": "allowed",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": 4,
+            "safety_delta": -20,
+            "critical_marks": [
+              "aisle_left_blocked"
+            ]
+          },
+          "explanation": "Владелец доволен, но проход остаётся заблокированным. Снижается безопасность, проблема продолжает действовать.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "verify": {
+      "text": "Чемодан размещён. Проверьте, действительно ли проход свободен.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "confirm_clear",
+          "text": "Убедиться, что проход освобождён, и завершить разговор.",
+          "text_status": "draft",
+          "next": "resolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": 8,
+            "facts": {
+              "aisle_clear": true
+            }
+          },
+          "explanation": "Помогли корректно разместить вещи.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "finish_unchecked",
+          "text": "Завершить разговор без проверки результата.",
+          "text_status": "draft",
+          "next": "unchecked",
+          "conditions": {},
+          "effects": {},
+          "explanation": "Размещение ещё не подтверждает свободный проход. Фактический результат не проверен.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "conflict": {
+      "text": "Пассажир возражает: «А куда мне его убрать?» Проход пока не освобождён.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "recover_help",
+          "text": "Объяснить необходимость свободного прохода и предложить помощь.",
+          "text_status": "draft",
+          "next": "space",
+          "conditions": {},
+          "effects": {},
+          "explanation": "Конкретное решение позволяет вернуться к поиску места. Предыдущее требование остаётся в истории.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "repeat_demand",
+          "text": "Повторить требование, не предложив места.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": -10
+          },
+          "explanation": "Вы обозначили требование, но не предложили конкретного места для багажа. Пассажир не понял, как выполнить просьбу. В следующий раз предложите доступный вариант размещения и убедитесь, что проход освобождён",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        },
+        {
+          "id": "allow_luggage",
+          "text": "Разрешить оставить чемодан.",
+          "text_status": "concept_excerpt",
+          "next": "allowed",
+          "conditions": {},
+          "effects": {
+            "loyalty_delta": 4,
+            "safety_delta": -20,
+            "critical_marks": [
+              "aisle_left_blocked"
+            ]
+          },
+          "explanation": "Владелец доволен, но проход остаётся заблокированным. Снижается безопасность, проблема продолжает действовать.",
+          "explanation_status": "concept_excerpt",
+          "unavailable_reason": "Условие размещения не выполнено."
+        }
+      ]
+    },
+    "resolved": {
+      "text": "Проход освобождён. Багаж размещён с помощью сотрудника.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "resolved",
+      "recommendation": "Сначала проверяйте доступное место, затем помогайте и проверяйте фактический результат."
+    },
+    "unresolved": {
+      "text": "Разбор завершён, но проблема остаётся: конкретное место не предложено, проход не освобождён.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "unresolved",
+      "recommendation": "Вы обозначили требование, но не предложили конкретного места для багажа. Пассажир не понял, как выполнить просьбу. В следующий раз предложите доступный вариант размещения и убедитесь, что проход освобождён"
+    },
+    "allowed": {
+      "text": "Разбор завершён. Владелец доволен, но чемодан продолжает мешать проходу.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "allowed_blocked",
+      "recommendation": "Предложите допустимое место и помощь, затем убедитесь, что проход освобождён."
+    },
+    "unchecked": {
+      "text": "Разбор завершён. Багаж перенесён, но свободный проход не подтверждён.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "not_verified",
+      "recommendation": "После размещения проверьте фактический результат: свободен ли проход."
+    }
+  }
+}

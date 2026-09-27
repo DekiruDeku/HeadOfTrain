@@ -1,0 +1,38 @@
+{
+  "version": "b3-1.0.0-draft",
+  "duration_seconds": 420,
+  "initial_loyalty": 50,
+  "carriages": [
+    {"id":"carriage-1","name":"Вагон № 1","available":true},
+    {"id":"carriage-2","name":"Вагон № 2","available":true}
+  ],
+  "route_points": [
+    {"id":"c1-desk","carriage_id":"carriage-1"},
+    {"id":"c1-blanket","carriage_id":"carriage-1"},
+    {"id":"c1-door","carriage_id":"carriage-1"},
+    {"id":"c2-door","carriage_id":"carriage-2"},
+    {"id":"c2-luggage","carriage_id":"carriage-2"},
+    {"id":"c2-table","carriage_id":"carriage-2"},
+    {"id":"c2-desk","carriage_id":"carriage-2"}
+  ],
+  "edge_seconds": [4,4,6,4,5,4],
+  "staff": [
+    {"id":"staff-1","name":"Анна","route_point_id":"c1-desk"},
+    {"id":"staff-2","name":"Борис","route_point_id":"c2-desk"},
+    {"id":"staff-3","name":"Вера","route_point_id":"c2-luggage"}
+  ],
+  "incidents": [
+    {"id":"luggage-1","carriage_id":"carriage-2","marker_id":"luggage-marker","type":"safety","priority":"high","route_point_id":"c2-luggage","participant_ids":["luggage-owner"],"reaction_seconds":60,"service_seconds":null},
+    {"id":"blanket-1","carriage_id":"carriage-1","marker_id":"blanket-marker","type":"service","priority":"normal","route_point_id":"c1-blanket","participant_ids":["blanket-passenger"],"text":"Пассажир просит плед.","text_status":"draft","reaction_seconds":90,"service_seconds":20,"success":{"loyalty_delta":8},"timeout":{"loyalty_delta":-8}},
+    {"id":"table-1","carriage_id":"carriage-2","marker_id":"table-marker","type":"service","priority":"normal","route_point_id":"c2-table","participant_ids":["table-passenger"],"text":"Пассажир просит убрать столик.","text_status":"draft","reaction_seconds":100,"service_seconds":15,"success":{"loyalty_delta":6},"timeout":{"loyalty_delta":-6}}
+  ],
+  "critical_nodes": {"opening":{"seconds":30,"next":"decision_timeout"},"verify":{"seconds":20,"next":"decision_timeout"}},
+  "reaction_timeout": {"next":"response_timeout","effects":{"loyalty_delta":-10,"safety_delta":-15,"critical_marks":["aisle_response_missed"]},"text":"Сотрудник не прибыл в срок. Проход остался без проверки."},
+  "decision_timeout": {"effects":{"loyalty_delta":-5,"safety_delta":-15,"critical_marks":["aisle_decision_missed"]},"text":"Истекло время критического решения. Безопасность прохода не подтверждена."},
+  "timeout_nodes": {
+    "response_timeout":{"text":"Реакция на заблокированный проход просрочена.","text_status":"draft","actions":[],"outcome":"response_timeout","recommendation":"Назначайте помощь с учётом времени пути до обращения."},
+    "decision_timeout":{"text":"Критическое решение не принято в срок.","text_status":"draft","actions":[],"outcome":"decision_timeout","recommendation":"В критическом узле примите решение до завершения отдельного таймера."}
+  },
+  "service_text": "Обслуживание завершено.",
+  "service_timeout_text": "Сотрудник не прибыл в срок; обращение пропущено."
+}

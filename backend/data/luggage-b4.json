@@ -1,0 +1,427 @@
+{
+  "id": "luggage-in-aisle",
+  "version": "b4-1.0.0-draft",
+  "title": "Чемодан в проходе",
+  "content_status": "draft",
+  "verification_status": "unverified_missing_dataset",
+  "draft_note": "Демонстрационный черновик; датасет и правила обучения не предоставлены. Реплики, допустимость решений, оценки и время не подтверждены нормативно.",
+  "sources": [
+    {
+      "file": "MVPHeadOfTrain.txt",
+      "section": "6. Собрать содержание одного рейса",
+      "status": "provided_scope_not_training_standard"
+    },
+    {
+      "file": "ConceptHeadOfTrain.txt",
+      "section": "Чемодан в проходе",
+      "dataset_reference": "№ 14 упомянут в концепте; оригинал отсутствует",
+      "status": "concept_only_dataset_missing"
+    }
+  ],
+  "condition_schema": {
+    "luggage_space": [
+      "free",
+      "occupied"
+    ]
+  },
+  "default_conditions": {
+    "luggage_space": "free"
+  },
+  "initial_node": "opening",
+  "initial_facts": {
+    "aisle_clear": false,
+    "placement": null,
+    "conditions_checked": false
+  },
+  "nodes": {
+    "opening": {
+      "text": "Крупный чемодан мешает проходу. Владелец не хочет оставлять вещи далеко. Как начать?",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "offer_help",
+          "text": "Объяснить необходимость свободного прохода и проверить место вместе с владельцем.",
+          "text_status": "draft",
+          "next": "space",
+          "conditions": {},
+          "effects": {
+            "facts": {
+              "conditions_checked": true
+            }
+          },
+          "explanation": "Предложена помощь и проверены условия до обещания размещения.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "check_before_promise",
+              "result": "met"
+            },
+            {
+              "competency": "safety",
+              "criterion": "identify_obstruction",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "demand_removal",
+          "text": "Потребовать убрать чемодан без объяснения и помощи.",
+          "text_status": "draft",
+          "next": "space",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "luggage-owner": -10
+            },
+            "facts": {
+              "conditions_checked": true,
+              "communication_conflict": true
+            }
+          },
+          "explanation": "Пассажир возражает. Сотрудник проверил место, но грубое требование снизило доверие; ещё можно решить проблему.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "communication",
+              "criterion": "respectful_contact",
+              "result": "missed"
+            }
+          ]
+        },
+        {
+          "id": "allow_luggage",
+          "text": "Разрешить оставить чемодан в проходе.",
+          "text_status": "draft",
+          "next": "allowed",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "luggage-owner": 4
+            },
+            "safety_delta": -20,
+            "critical_marks": [
+              "aisle_left_blocked"
+            ]
+          },
+          "explanation": "Владелец доволен уступкой, но препятствие остаётся. Сервис позже не устранит эту отметку.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "space": {
+      "branches": [
+        {
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "next": "space_free"
+        },
+        {
+          "conditions": {
+            "luggage_space": "occupied"
+          },
+          "next": "space_occupied"
+        }
+      ]
+    },
+    "space_free": {
+      "text": "Предусмотренное место свободно.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "place_free",
+          "text": "Помочь перенести чемодан в свободное место.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "effects": {
+            "facts": {
+              "placement": "regular"
+            }
+          },
+          "explanation": "Есть проверенное место: обещание выполнено, осталось проверить проход.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "leave_unresolved",
+          "text": "Повторить требование и уйти.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "safety_delta": -15,
+            "critical_marks": [
+              "aisle_unresolved"
+            ]
+          },
+          "explanation": "Свободное место было, но помощь не организована и проход остался занят.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "space_occupied": {
+      "text": "Основное место занято. В этой демонстрации доступно другое предусмотренное место; его допустимость требует проверки по датасету.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "place_free",
+          "text": "Перенести в основное место.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "free"
+          },
+          "effects": {},
+          "explanation": "В занятое место переносить нельзя.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "place_alternative",
+          "text": "Проверить другое место и помочь перенести туда чемодан.",
+          "text_status": "draft",
+          "next": "verify",
+          "conditions": {
+            "luggage_space": "occupied"
+          },
+          "effects": {
+            "facts": {
+              "placement": "alternative",
+              "alternative_checked": true
+            }
+          },
+          "explanation": "В черновой модели альтернативное место проверено и свободно; багаж перенесён без занятия прохода.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        },
+        {
+          "id": "leave_unresolved",
+          "text": "Повторить требование и уйти.",
+          "text_status": "draft",
+          "next": "unresolved",
+          "conditions": {},
+          "effects": {
+            "safety_delta": -15,
+            "critical_marks": [
+              "aisle_unresolved"
+            ]
+          },
+          "explanation": "Повтор просьбы не создал места и не освободил проход.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "verify": {
+      "text": "Багаж перенесён. Нужно проверить фактический результат.",
+      "text_status": "draft",
+      "actions": [
+        {
+          "id": "confirm_clear",
+          "text": "Проверить свободный проход и завершить разговор.",
+          "text_status": "draft",
+          "next": "resolved",
+          "conditions": {},
+          "effects": {
+            "loyalty_deltas": {
+              "luggage-owner": 8
+            },
+            "facts": {
+              "aisle_clear": true
+            }
+          },
+          "explanation": "Проход действительно освобождён. Проверка завершает действие, а помощь повышает доверие.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": [
+            {
+              "competency": "safety",
+              "criterion": "verify_result",
+              "result": "met"
+            }
+          ]
+        },
+        {
+          "id": "finish_unchecked",
+          "text": "Закрыть обращение без проверки.",
+          "text_status": "draft",
+          "next": "unchecked",
+          "conditions": {},
+          "effects": {
+            "safety_delta": -5,
+            "critical_marks": [
+              "aisle_not_verified"
+            ]
+          },
+          "explanation": "Перенос сам по себе не подтверждает безопасность. Результат остался непроверенным.",
+          "explanation_status": "draft",
+          "unavailable_reason": "Условия этого решения не подтверждены.",
+          "competency_evidence": []
+        }
+      ]
+    },
+    "resolved": {
+      "text": "Багаж размещён, проход проверен и свободен.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "resolved",
+      "recommendation": "Сохраняйте порядок: проверить место, помочь, проверить результат.",
+      "successful": true
+    },
+    "allowed": {
+      "text": "Чемодан оставлен в проходе.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "allowed_blocked",
+      "recommendation": "Предложите конкретное место вместо разрешения препятствия.",
+      "successful": false
+    },
+    "unresolved": {
+      "text": "Место не предложено, проход остаётся занят.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "unresolved",
+      "recommendation": "После требования предложите выполнимое решение.",
+      "successful": false
+    },
+    "unchecked": {
+      "text": "Багаж перенесён, но свободный проход не подтверждён.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "not_verified",
+      "recommendation": "Проверяйте результат перед закрытием обращения.",
+      "successful": false
+    },
+    "reaction_timeout": {
+      "text": "Сотрудник не прибыл до срока реакции.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "reaction_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    },
+    "trip_timeout": {
+      "text": "Рейс закончился, а решение не доведено до результата.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "trip_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    },
+    "decision_timeout": {
+      "text": "Истекло время критического решения; свободный проход не подтверждён.",
+      "text_status": "draft",
+      "actions": [],
+      "outcome": "decision_timeout",
+      "recommendation": "Сопоставляйте срок реакции с временем пути; завершайте начатое решение.",
+      "successful": false
+    }
+  },
+  "critical_nodes": {
+    "opening": {
+      "seconds": 45,
+      "next": "decision_timeout"
+    },
+    "verify": {
+      "seconds": 30,
+      "next": "decision_timeout"
+    }
+  },
+  "reaction_timeout": {
+    "id": "reaction_timeout",
+    "text": "Сотрудник не прибыл до срока реакции.",
+    "text_status": "draft",
+    "next": "reaction_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "luggage-owner": -8
+      },
+      "safety_delta": -15,
+      "critical_marks": [
+        "aisle_reaction_timeout"
+      ]
+    },
+    "explanation": "Сотрудник не прибыл до срока реакции. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "reaction_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "trip_timeout": {
+    "id": "trip_timeout",
+    "text": "Рейс закончился, а решение не доведено до результата.",
+    "text_status": "draft",
+    "next": "trip_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "luggage-owner": -8
+      },
+      "safety_delta": -15,
+      "critical_marks": [
+        "aisle_trip_timeout"
+      ]
+    },
+    "explanation": "Рейс закончился, а решение не доведено до результата. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "trip_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "decision_timeout": {
+    "id": "decision_timeout",
+    "text": "Истекло время критического решения; свободный проход не подтверждён.",
+    "text_status": "draft",
+    "next": "decision_timeout",
+    "conditions": {},
+    "effects": {
+      "loyalty_deltas": {
+        "luggage-owner": -8
+      },
+      "safety_delta": -15,
+      "critical_marks": [
+        "aisle_decision_timeout"
+      ]
+    },
+    "explanation": "Истекло время критического решения; свободный проход не подтверждён. В этой учебной модели обращение закрывается как пропущенное; это не успешное решение.",
+    "explanation_status": "draft",
+    "unavailable_reason": "Условия этого решения не подтверждены.",
+    "competency_evidence": [
+      {
+        "competency": "prioritization",
+        "criterion": "decision_timeout",
+        "result": "missed"
+      }
+    ]
+  },
+  "applicable_competencies": [
+    "communication",
+    "prioritization",
+    "safety"
+  ]
+}

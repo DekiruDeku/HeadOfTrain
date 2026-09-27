@@ -1,0 +1,16 @@
+{
+  "version": "b5-1",
+  "points_per_criterion": 10,
+  "competencies": {"communication": "Коммуникация", "safety": "Безопасность", "prioritization": "Приоритизация"},
+  "scenarios": {
+    "luggage-in-aisle": {"verification_fact": "aisle_clear", "safety": true},
+    "children-disturb": {"verification_fact": "agreement_verified", "safety": false},
+    "wrong-seat": {"verification_fact": "seat_verified", "safety": false}
+  },
+  "achievements": {
+    "first_trip": "Первый рейс",
+    "safety_resolved": "Безопасный рейс",
+    "checked_before_promise": "Сначала проверка"
+  },
+  "default_organization": {"crew_id": "crew-demo-1", "depot_id": "depot-demo-1", "company_id": "company-demo-1"}
+}
