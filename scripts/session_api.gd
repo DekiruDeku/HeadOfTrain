@@ -7,10 +7,12 @@ signal report_received
 const PLAYER_KEY := "hot.demo_player_id.v1"
 const SESSION_KEY := "hot.session.v1"
 const SAVE_PATH := "user://session-v1.json"
+const Crew = preload("res://scripts/crew_state.gd")
 var player_id := ""
 var trip_id := ""
 var trip: Dictionary = {}
 var report: Dictionary = {}
+var saved_reports: Array = []
 var pending_post: Dictionary = {}
 var busy := false
 var ready_for_input := false
@@ -39,19 +41,24 @@ func retry() -> void:
 	error_code = ""
 	_source = "restore"
 	if not pending_post.is_empty():
+		var restored_source := str(pending_post.get("source", "restore"))
+		if restored_source in ["assignments", "dialog/open", "dialog/close"]:
+			_source = restored_source
 		_send("post", pending_post.path, pending_post.body)
 	else:
 		_send("current", "/api/trips/current")
 
 func start_attempt(condition: String, new_attempt: bool) -> void:
-	if not ready_for_input or busy or not pending_post.is_empty():
+	if not _can_submit():
 		return
+	_cancel_poll()
 	_source = "start"
-	_post("/api/trips/start", {"request_id": _uuid(), "luggage_space": condition, "new_attempt": new_attempt})
+	_post("/api/trips/start", {"request_id": _uuid(), "luggage_space": condition, "new_attempt": new_attempt, "simulation_mode": "full_b4"})
 
 func choose(incident_id: String, action_id: String) -> void:
-	if not ready_for_input or busy or not pending_post.is_empty() or trip.get("status") != "in_progress":
+	if not _can_submit() or trip.get("status") != "in_progress":
 		return
+	_cancel_poll()
 	_source = "action"
 	_post("/api/trips/%s/actions" % trip.trip_id, {
 		"request_id": _uuid(), "expected_state_version": int(trip.state_version),
@@ -60,11 +67,51 @@ func choose(incident_id: String, action_id: String) -> void:
 
 func _post(path: String, body: Dictionary) -> void:
 	# Save the EXACT serialized body before sending. Never reconstruct a retry.
-	pending_post = {"path": path, "body": JSON.stringify(body)}
+	pending_post = {"path": path, "body": JSON.stringify(body), "source": _source}
 	if not _save_session():
 		return
 	notice = ""
 	_send("post", path, pending_post.body)
+
+func assign(incident_id: String, staff_id: String) -> void:
+	_crew_command("assignments", {"incident_id": incident_id, "staff_id": staff_id})
+
+func open_dialog(incident_id: String) -> void:
+	_crew_command("dialog/open", {"incident_id": incident_id})
+
+func close_dialog() -> void:
+	if trip.get("simulation_mode") in ["crew_b3", "full_b4"]:
+		_crew_command("dialog/close", {"incident_id": trip.dialog.incident_id})
+	else:
+		_crew_command("dialog/close", {"dialog_id": trip.get("active_dialog_id")})
+
+func _crew_command(operation: String, fields: Dictionary) -> void:
+	if not _can_submit() or not Crew.enabled(trip):
+		return
+	_cancel_poll()
+	_source = operation
+	fields.request_id = _uuid()
+	fields.expected_state_version = int(trip.state_version)
+	_post("/api/trips/%s/%s" % [trip.trip_id, operation], fields)
+
+func is_polling() -> bool:
+	return busy and _kind == "current" and _source == "poll"
+
+func _can_submit() -> bool:
+	return ready_for_input and pending_post.is_empty() and (not busy or is_polling())
+
+func _cancel_poll() -> void:
+	# A background read must not swallow a click. Commands still use the last
+	# confirmed version; the server can reject a stale version normally.
+	if is_polling():
+		http.cancel_request()
+		busy = false
+
+func _on_poll() -> void:
+	if busy or not ready_for_input or not error_code.is_empty() or not pending_post.is_empty() or trip.get("status") != "in_progress" or not Crew.enabled(trip):
+		return
+	_source = "poll"
+	_send("current", "/api/trips/current")
 
 func _origin() -> String:
 	if OS.has_feature("web"):
@@ -74,9 +121,11 @@ func _origin() -> String:
 func _send(kind: String, path: String, body: String = "") -> void:
 	print("A2 request: " + kind)
 	busy = true
-	ready_for_input = false
+	if _source != "poll":
+		ready_for_input = false
 	_kind = kind
-	message = "Ждём подтверждение сервера…" if kind == "post" else "Загружаем сохранённое состояние…"
+	if _source != "poll":
+		message = "Ждём подтверждение сервера…" if kind == "post" else "Загружаем сохранённое состояние…"
 	if kind == "report":
 		message = "Загружаем сохранённый разбор…"
 	changed.emit()
@@ -103,11 +152,14 @@ func _on_response(result: int, code: int, _headers: PackedStringArray, bytes: Pa
 			_fail("invalid_report", "Разбор не соответствует попытке. Повторите загрузку.")
 			return
 		report = data.report
+		if not remember_report(report):
+			return
 		ready_for_input = true
 		message = "Разбор получен из сохранённой попытки."
 		changed.emit()
 		report_received.emit()
 		return
+	data.trip = Crew.from_wire(data.get("trip"))
 	if not _valid_trip(data.get("trip")):
 		_fail("invalid_state", "Ответ не содержит полного состояния сценария. Повторите загрузку.")
 		return
@@ -128,6 +180,8 @@ func _on_response(result: int, code: int, _headers: PackedStringArray, bytes: Pa
 		return
 	error_code = ""
 	message = "Состояние подтверждено сервером."
+	if trip.has("fixture_label"):
+		message = "ФИКСТУРЫ А3 · HTTP-стенд · Б3 ещё не подключён · результаты не сохраняются."
 	state_received.emit(_source)
 	if trip.status == "completed":
 		_send("report", "/api/trips/%s/report" % trip_id)
@@ -149,7 +203,7 @@ func _handle_error(code: int, data: Dictionary) -> void:
 	# Definite rejections, not unknown POST outcomes.
 	if code in [409, 422] and _kind == "post":
 		pending_post = {}
-		notice = "Выбор не принят (%s). %s Выберите действие заново после загрузки состояния." % [server_error, str(data.get("message", ""))]
+		notice = "Запрос не принят (%s). %s Проверьте актуальное состояние." % [server_error, str(data.get("message", ""))]
 		if _save_session():
 			_source = "restore"
 			_send("current", "/api/trips/current")
@@ -164,7 +218,7 @@ func _fail(reason: String, detail: String) -> void:
 	error_code = reason
 	message = detail
 	if not pending_post.is_empty() and storage_ok:
-		message += " Неподтверждённый выбор сохранён; повторим тот же запрос."
+		message += " Неподтверждённый запрос сохранён; повторим его без изменений."
 	changed.emit()
 
 func _uuid() -> String:
@@ -200,6 +254,11 @@ func _load_session() -> bool:
 			return false
 		player_id = state.player_id
 		trip_id = str(state.get("trip_id", ""))
+		saved_reports = []
+		if state.get("reports") is Array:
+			for item in state.reports:
+				if item is Dictionary and item.get("trip_id") is String and item.trip_id.length() == 32 and item.trip_id.is_valid_hex_number() and item.get("completed_at") is String:
+					saved_reports.append(item)
 		pending_post = state.get("pending", {})
 		if not pending_post.is_empty() and (not pending_post.get("path") is String or not pending_post.get("body") is String or not pending_post.path.begins_with("/api/trips/") or not JSON.parse_string(pending_post.body) is Dictionary):
 			_fail("storage", "Сохранённый запрос повреждён. Он не отправлен; запись оставлена для диагностики.")
@@ -212,7 +271,7 @@ func _load_session() -> bool:
 	return _save_session()
 
 func _save_session() -> bool:
-	var raw := JSON.stringify({"player_id": player_id, "trip_id": trip_id, "pending": pending_post})
+	var raw := JSON.stringify({"player_id": player_id, "trip_id": trip_id, "pending": pending_post, "reports": saved_reports})
 	if OS.has_feature("web"):
 		var script := "(() => { try { const p=%s, s=%s; localStorage.setItem('%s', p); localStorage.setItem('%s', s); return localStorage.getItem('%s')===p && localStorage.getItem('%s')===s; } catch(e) { return false; } })()" % [JSON.stringify(player_id), JSON.stringify(raw), PLAYER_KEY, SESSION_KEY, PLAYER_KEY, SESSION_KEY]
 		var stored: Variant = JavaScriptBridge.eval(script)
@@ -231,6 +290,14 @@ func _save_session() -> bool:
 	if not storage_ok:
 		_fail("storage", "Не удалось сохранить данные. Освободите место или разрешите хранилище и повторите.")
 	return storage_ok
+
+func remember_report(value: Dictionary) -> bool:
+	for entry in saved_reports:
+		if entry.trip_id == value.trip_id:
+			return true
+	# Only links are cached. Scores and report content always come from the server.
+	saved_reports.push_front({"trip_id": value.trip_id, "completed_at": str(value.get("completed_at", ""))})
+	return _save_session()
 
 func _valid_history(value: Variant) -> bool:
 	if not value is Array:
@@ -268,7 +335,12 @@ func _valid_facts(value: Variant) -> bool:
 	return value.get("placement") in [null, "regular", "alternative"]
 
 func _valid_scales(value: Variant) -> bool:
-	return value is Dictionary and _number(value.get("safety")) and value.get("loyalty") is Dictionary and _number(value.loyalty.get("luggage-owner")) and (value.get("overall_loyalty") == null or _number(value.overall_loyalty))
+	if not value is Dictionary or not _number(value.get("safety")) or not value.get("loyalty") is Dictionary or (value.get("overall_loyalty") != null and not _number(value.overall_loyalty)):
+		return false
+	for amount in value.loyalty.values():
+		if not _number(amount):
+			return false
+	return true
 
 func _valid_trip(value: Variant) -> bool:
 	if not value is Dictionary:
@@ -283,12 +355,19 @@ func _valid_trip(value: Variant) -> bool:
 		return false
 	if not value.get("incidents") is Array or value.incidents.is_empty() or not value.get("carriages") is Array or value.carriages.is_empty():
 		return false
+	if not value.get("staff") is Array:
+		return false
 	for carriage in value.carriages:
 		if not carriage is Dictionary or not carriage.get("id") is String or not carriage.get("name") is String:
 			return false
 	for incident in value.incidents:
-		if not incident is Dictionary or not incident.get("id") is String or not incident.get("marker_id") is String or not incident.get("text") is String or incident.get("state") not in ["resolving", "completed"]:
+		if not incident is Dictionary or not incident.get("id") is String or not incident.get("marker_id") is String or not incident.get("text") is String or incident.get("state") not in ["waiting", "en_route", "resolving", "completed"]:
 			return false
+	if Crew.enabled(value):
+		if not Crew.valid(value):
+			return false
+		if not value.paused:
+			return true
 	if value.status == "in_progress":
 		var dialog: Variant = value.get("dialog")
 		if not dialog is Dictionary or not dialog.get("text") is String or not dialog.get("options") is Array or dialog.options.is_empty() or dialog.options.size() > 3:
@@ -305,9 +384,35 @@ func _valid_acknowledgement(data: Dictionary) -> bool:
 	if pending_post.path == "/api/trips/start":
 		return data.get("player_id") == player_id and data.get("status") == "started" and data.get("trip_id") == data.trip.trip_id
 	var payload: Dictionary = JSON.parse_string(pending_post.body)
+	for operation in ["assignments", "dialog/open", "dialog/close"]:
+		if pending_post.path == "/api/trips/%s/%s" % [data.trip.trip_id, operation]:
+			if data.trip.get("simulation_mode") in ["crew_b3", "full_b4"]:
+				return _valid_b3_command(data.trip, payload, operation)
+			var ack: Variant = data.get("acknowledgement")
+			if not ack is Dictionary or ack.get("request_id") != payload.request_id or ack.get("operation") != operation:
+				return false
+			for field in ["incident_id", "staff_id", "dialog_id"]:
+				if payload.has(field) and ack.get(field) != payload[field]:
+					return false
+			return true
 	if pending_post.path != "/api/trips/%s/actions" % data.trip.trip_id:
 		return false
 	for entry in data.trip.history:
 		if entry.request_id == payload.request_id and entry.get("action_id") == payload.action_id and entry.get("node_before") == payload.node_id:
 			return true
+	return false
+
+func _valid_b3_command(state: Dictionary, payload: Dictionary, operation: String) -> bool:
+	# B3 returns the committed snapshot, not the draft acknowledgement envelope.
+	# Exact HTTP body/path are retained for retries; a successful replay is followed by GET.
+	if state.state_version <= payload.expected_state_version:
+		return false
+	for incident in state.incidents:
+		if incident.id != payload.incident_id:
+			continue
+		if operation == "assignments":
+			return incident.get("assigned_staff_id") == payload.staff_id and incident.state in ["en_route", "resolving"]
+		if operation == "dialog/open":
+			return state.paused and state.dialog is Dictionary and state.dialog.get("incident_id") == payload.incident_id
+		return operation == "dialog/close" and not state.paused and state.get("active_dialog_id") == null
 	return false

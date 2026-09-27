@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/progress_row.gd" id="1"]
+
+[node name="ProgressRow" type="PanelContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Запись сервера"
+autowrap_mode = 3
+
+[node name="Detail" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Основание и результат"
+autowrap_mode = 3
+
+[node name="Footnote" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Small"
+text = "Источник записи"
+autowrap_mode = 2
+
+[node name="Open" type="Button" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "Открыть"
+autowrap_mode = 3
+
+[connection signal="pressed" from="Content/Open" to="." method="_on_open"]

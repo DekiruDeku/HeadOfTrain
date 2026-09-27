@@ -32,14 +32,14 @@ theme_override_constants/separation = 14
 [node name="Badge" type="Label" parent="Margin/Panel/Content"]
 layout_mode = 2
 theme_type_variation = &"Small"
-text = "КРАТКИЙ РАЗБОР · ДАННЫЕ СЕРВЕРА · ЧЕРНОВИК"
+text = "РАЗБОР РЕШЕНИЙ · СОХРАНЁННЫЙ ЖУРНАЛ"
 autowrap_mode = 3
 
 [node name="Title" type="Label" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Разбор · Чемодан в проходе"
+text = "Рейс завершён · сохранённый разбор"
 autowrap_mode = 3
 
 [node name="Summary" type="Label" parent="Margin/Panel/Content"]
@@ -111,12 +111,26 @@ theme_type_variation = &"Section"
 text = "Рекомендация сервера"
 autowrap_mode = 3
 
+[node name="Evidence" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Small"
+text = "Доказательство из журнала действий"
+autowrap_mode = 2
+
 [node name="Persistence" type="Label" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Small"
 text = "Состояние сохранения"
 autowrap_mode = 3
+
+[node name="TripId" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "trip_id"
+autowrap_mode = 2
 
 [node name="Continue" type="Button" parent="Margin/Panel/Content"]
 unique_name_in_owner = true

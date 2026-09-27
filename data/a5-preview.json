@@ -1,0 +1,1104 @@
+{
+  "fixture_only": true,
+  "source": "A5 client proposal; NOT B5",
+  "profile": {
+    "player_id": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+    "display_name": "Тестовый игрок А5",
+    "total_points": 137,
+    "completed_trips": 4,
+    "competencies": {
+      "communication": {
+        "applicable": true,
+        "score": 3,
+        "max_score": 5,
+        "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля."
+      },
+      "safety": {
+        "applicable": true,
+        "score": 5,
+        "max_score": 5,
+        "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля."
+      },
+      "prioritization": {
+        "applicable": true,
+        "score": 4,
+        "max_score": 5,
+        "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля."
+      }
+    },
+    "recommendation": "Перед обещанием пересадки уточните наличие свободного места.",
+    "achievements": [
+      {
+        "id": "first_trip",
+        "title": "Первый рейс",
+        "description": "Завершён первый рейс.",
+        "earned": true,
+        "earned_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "safe_trip",
+        "title": "Безопасный рейс",
+        "description": "Все проблемы безопасности устранены без критических нарушений.",
+        "earned": true,
+        "earned_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "checked_conditions",
+        "title": "Проверил, прежде чем обещать",
+        "description": "Во всех подходящих ситуациях условия проверены до обещания решения.",
+        "earned": false,
+        "earned_at": null
+      }
+    ],
+    "third_carriage_unlocked": true,
+    "reports": [
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 1"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 2"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 3"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 4"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 5"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 6"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 7"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 8"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 9"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 10"
+      },
+      {
+        "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+        "completed_at": "2027-01-15T08:07:30+00:00",
+        "title": "Тестовый отчёт 11"
+      }
+    ]
+  },
+  "report": {
+    "completed_at": "2027-01-15T08:07:30+00:00",
+    "completed_participant_ids": [
+      "blanket-passenger",
+      "complainant",
+      "family",
+      "luggage-owner",
+      "seat-holder",
+      "seated-passenger",
+      "table-passenger"
+    ],
+    "content_status": "draft",
+    "critical_marks": [],
+    "duration_seconds": 360.0,
+    "events": [
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 1,
+        "incident_id": "luggage-1",
+        "simulation_time": 0.0,
+        "type": "incident_appeared"
+      },
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 2,
+        "incident_id": "blanket-1",
+        "simulation_time": 0.0,
+        "type": "incident_appeared"
+      },
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 3,
+        "incident_id": "blanket-1",
+        "simulation_time": 0.0,
+        "staff_id": "staff-1",
+        "type": "assignment"
+      },
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 4,
+        "incident_id": "luggage-1",
+        "simulation_time": 0.0,
+        "staff_id": "staff-3",
+        "type": "assignment"
+      },
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 5,
+        "incident_id": "luggage-1",
+        "simulation_time": 0.0,
+        "staff_id": "staff-3",
+        "type": "arrival"
+      },
+      {
+        "at": "2027-01-15T08:00:00+00:00",
+        "id": 6,
+        "incident_id": "luggage-1",
+        "simulation_time": 0.0,
+        "type": "dialog_open"
+      },
+      {
+        "at": "2027-01-15T08:00:34+00:00",
+        "id": 7,
+        "incident_id": "blanket-1",
+        "simulation_time": 4.0,
+        "staff_id": "staff-1",
+        "type": "arrival"
+      },
+      {
+        "at": "2027-01-15T08:02:10+00:00",
+        "id": 8,
+        "incident_id": "children-1",
+        "simulation_time": 100.0,
+        "type": "incident_appeared"
+      },
+      {
+        "at": "2027-01-15T08:02:10+00:00",
+        "id": 9,
+        "incident_id": "children-1",
+        "simulation_time": 100.0,
+        "staff_id": "staff-1",
+        "type": "assignment"
+      },
+      {
+        "at": "2027-01-15T08:02:10+00:00",
+        "id": 10,
+        "incident_id": "children-1",
+        "simulation_time": 100.0,
+        "staff_id": "staff-1",
+        "type": "arrival"
+      },
+      {
+        "at": "2027-01-15T08:02:10+00:00",
+        "id": 11,
+        "incident_id": "children-1",
+        "simulation_time": 100.0,
+        "type": "dialog_open"
+      },
+      {
+        "at": "2027-01-15T08:04:20+00:00",
+        "id": 12,
+        "incident_id": "table-1",
+        "simulation_time": 200.0,
+        "type": "incident_appeared"
+      },
+      {
+        "at": "2027-01-15T08:04:20+00:00",
+        "id": 13,
+        "incident_id": "table-1",
+        "simulation_time": 200.0,
+        "staff_id": "staff-2",
+        "type": "assignment"
+      },
+      {
+        "at": "2027-01-15T08:04:24+00:00",
+        "id": 14,
+        "incident_id": "table-1",
+        "simulation_time": 204.0,
+        "staff_id": "staff-2",
+        "type": "arrival"
+      },
+      {
+        "at": "2027-01-15T08:05:20+00:00",
+        "id": 15,
+        "incident_id": "seat-1",
+        "simulation_time": 260.0,
+        "type": "incident_appeared"
+      },
+      {
+        "at": "2027-01-15T08:05:20+00:00",
+        "id": 16,
+        "incident_id": "seat-1",
+        "simulation_time": 260.0,
+        "staff_id": "staff-2",
+        "type": "assignment"
+      },
+      {
+        "at": "2027-01-15T08:05:20+00:00",
+        "id": 17,
+        "incident_id": "seat-1",
+        "simulation_time": 260.0,
+        "staff_id": "staff-2",
+        "type": "arrival"
+      },
+      {
+        "at": "2027-01-15T08:05:20+00:00",
+        "id": 18,
+        "incident_id": "seat-1",
+        "simulation_time": 260.0,
+        "type": "dialog_open"
+      },
+      {
+        "at": "2027-01-15T08:07:30+00:00",
+        "id": 19,
+        "outcome": "successful",
+        "simulation_time": 360.0,
+        "type": "trip_completed"
+      }
+    ],
+    "facts": {
+      "children-1": {
+        "agreement_verified": true,
+        "conditions_checked": true,
+        "solution": "relocation"
+      },
+      "luggage-1": {
+        "aisle_clear": true,
+        "conditions_checked": true,
+        "placement": "regular"
+      },
+      "seat-1": {
+        "conditions_checked": true,
+        "seat_verified": true,
+        "solution": "guided_to_ticket"
+      }
+    },
+    "history": [
+      {
+        "action_id": "offer_help",
+        "competency_evidence": [
+          {
+            "competency": "communication",
+            "criterion": "check_before_promise",
+            "result": "met"
+          },
+          {
+            "competency": "safety",
+            "criterion": "identify_obstruction",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "luggage_space": "free"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:00:10+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "conditions_checked": true
+          }
+        },
+        "explanation": "Предложена помощь и проверены условия до обещания размещения.",
+        "explanation_status": "draft",
+        "incident_id": "luggage-1",
+        "node_after": "space_free",
+        "node_before": "opening",
+        "request_id": "b97d3c52feb3486c921b991513740bf2",
+        "scenario_id": "luggage-in-aisle",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Объяснить необходимость свободного прохода и проверить место вместе с владельцем.",
+        "simulation_time": 0.0,
+        "source": "player"
+      },
+      {
+        "action_id": "place_free",
+        "competency_evidence": [],
+        "conditions": {
+          "luggage_space": "free"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:00:20+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "placement": "regular"
+          }
+        },
+        "explanation": "Есть проверенное место: обещание выполнено, осталось проверить проход.",
+        "explanation_status": "draft",
+        "incident_id": "luggage-1",
+        "node_after": "verify",
+        "node_before": "space_free",
+        "request_id": "00bb530c2357434590546808fdb881fa",
+        "scenario_id": "luggage-in-aisle",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Помочь перенести чемодан в свободное место.",
+        "simulation_time": 0.0,
+        "source": "player"
+      },
+      {
+        "action_id": "confirm_clear",
+        "competency_evidence": [
+          {
+            "competency": "safety",
+            "criterion": "verify_result",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "luggage_space": "free"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:00:30+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "aisle_clear": true
+          },
+          "loyalty_deltas": {
+            "luggage-owner": 8
+          }
+        },
+        "explanation": "Проход действительно освобождён. Проверка завершает действие, а помощь повышает доверие.",
+        "explanation_status": "draft",
+        "incident_id": "luggage-1",
+        "node_after": "resolved",
+        "node_before": "verify",
+        "request_id": "e212d44f7df24d9e806f8e4fc11658f2",
+        "scenario_id": "luggage-in-aisle",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Проверить свободный проход и завершить разговор.",
+        "simulation_time": 0.0,
+        "source": "player"
+      },
+      {
+        "action_id": "service",
+        "competency_evidence": [],
+        "conditions": {},
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:00:54+00:00",
+        "decision_time_seconds": 0.0,
+        "effects": {
+          "loyalty_delta": 8
+        },
+        "explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "explanation_status": "draft",
+        "incident_id": "blanket-1",
+        "node_after": "completed",
+        "node_before": "resolving",
+        "request_id": "auto:service:blanket-1",
+        "scenario_id": null,
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "simulation_time": 24.0,
+        "source": "service"
+      },
+      {
+        "action_id": "clarify",
+        "competency_evidence": [
+          {
+            "competency": "communication",
+            "criterion": "check_before_promise",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "relocation": "available"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:02:20+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "conditions_checked": true
+          }
+        },
+        "explanation": "Уточнены интересы обеих сторон и наличие места до обещаний.",
+        "explanation_status": "draft",
+        "incident_id": "children-1",
+        "node_after": "options_available",
+        "node_before": "opening",
+        "request_id": "00b95f0f3c8249a5b6ad2875ba73a84f",
+        "scenario_id": "children-disturb",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Спокойно выслушать обе стороны и проверить варианты пересадки.",
+        "simulation_time": 100.0,
+        "source": "player"
+      },
+      {
+        "action_id": "offer_move",
+        "competency_evidence": [],
+        "conditions": {
+          "relocation": "available"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:02:30+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "solution": "relocation"
+          },
+          "loyalty_deltas": {
+            "complainant": 5,
+            "family": 3
+          }
+        },
+        "explanation": "Пересадка предложена после проверки и по согласию; семья не обвиняется.",
+        "explanation_status": "draft",
+        "incident_id": "children-1",
+        "node_after": "verify",
+        "node_before": "options_available",
+        "request_id": "9ca4b45f270c4164aba967ad1a633c5e",
+        "scenario_id": "children-disturb",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "С согласия пассажира помочь ему пересесть.",
+        "simulation_time": 100.0,
+        "source": "player"
+      },
+      {
+        "action_id": "verify_agreement",
+        "competency_evidence": [
+          {
+            "competency": "communication",
+            "criterion": "verify_result",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "relocation": "available"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:02:40+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "agreement_verified": true
+          },
+          "loyalty_deltas": {
+            "complainant": 3,
+            "family": 3
+          }
+        },
+        "explanation": "В этой ситуации обе стороны подтвердили, что договорённость помогла.",
+        "explanation_status": "draft",
+        "incident_id": "children-1",
+        "node_after": "resolved",
+        "node_before": "verify",
+        "request_id": "a8829a21ba3744bcafd405c67b279023",
+        "scenario_id": "children-disturb",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Убедиться, что обе стороны приняли результат.",
+        "simulation_time": 100.0,
+        "source": "player"
+      },
+      {
+        "action_id": "service",
+        "competency_evidence": [],
+        "conditions": {},
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:04:39+00:00",
+        "decision_time_seconds": 0.0,
+        "effects": {
+          "loyalty_delta": 6
+        },
+        "explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "explanation_status": "draft",
+        "incident_id": "table-1",
+        "node_after": "completed",
+        "node_before": "resolving",
+        "request_id": "auto:service:table-1",
+        "scenario_id": null,
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "simulation_time": 219.0,
+        "source": "service"
+      },
+      {
+        "action_id": "check_ticket",
+        "competency_evidence": [
+          {
+            "competency": "communication",
+            "criterion": "check_before_promise",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "seat_reason": "mistake"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:05:30+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "conditions_checked": true
+          }
+        },
+        "explanation": "Проверка отличает ошибку в месте от намеренной пересадки без обвинения.",
+        "explanation_status": "draft",
+        "incident_id": "seat-1",
+        "node_after": "mistake",
+        "node_before": "opening",
+        "request_id": "763b6bfcf2d442d1a56e8b6ae1b42a00",
+        "scenario_id": "wrong-seat",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Спокойно проверить билеты обоих пассажиров и выслушать объяснение.",
+        "simulation_time": 260.0,
+        "source": "player"
+      },
+      {
+        "action_id": "guide",
+        "competency_evidence": [],
+        "conditions": {
+          "seat_reason": "mistake"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:05:40+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "solution": "guided_to_ticket"
+          },
+          "loyalty_deltas": {
+            "seat-holder": 4,
+            "seated-passenger": 5
+          }
+        },
+        "explanation": "Ошибка исправлена конкретной помощью; обладатель занятого места может сесть.",
+        "explanation_status": "draft",
+        "incident_id": "seat-1",
+        "node_after": "verify",
+        "node_before": "mistake",
+        "request_id": "93f1fd7bacad482b96446d0aa0edb882",
+        "scenario_id": "wrong-seat",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Объяснить ошибку без упрёка и помочь найти место по билету.",
+        "simulation_time": 260.0,
+        "source": "player"
+      },
+      {
+        "action_id": "verify_seats",
+        "competency_evidence": [
+          {
+            "competency": "communication",
+            "criterion": "verify_result",
+            "result": "met"
+          }
+        ],
+        "conditions": {
+          "seat_reason": "mistake"
+        },
+        "content_status": "draft",
+        "decided_at": "2027-01-15T08:05:50+00:00",
+        "decision_time_seconds": 10.0,
+        "effects": {
+          "facts": {
+            "seat_verified": true
+          },
+          "loyalty_deltas": {
+            "seat-holder": 3,
+            "seated-passenger": 3
+          }
+        },
+        "explanation": "Оба пассажира разместились, выполнение решения подтверждено.",
+        "explanation_status": "draft",
+        "incident_id": "seat-1",
+        "node_after": "resolved",
+        "node_before": "verify",
+        "request_id": "a01a0faedb1a4c36be8f7d8aabce1b37",
+        "scenario_id": "wrong-seat",
+        "scenario_version": "b4-1.0.0-draft",
+        "selected_text": "Убедиться, что оба заняли свои места и вопрос закрыт.",
+        "simulation_time": 260.0,
+        "source": "player"
+      }
+    ],
+    "incidents": [
+      {
+        "appeared_at": 0.0,
+        "appears_at": 0,
+        "arrived_at": 0.0,
+        "assigned_staff_id": "staff-3",
+        "carriage_id": "carriage-2",
+        "conditions": {
+          "luggage_space": "free"
+        },
+        "content_status": "draft",
+        "critical_decision_time": null,
+        "facts": {
+          "aisle_clear": true,
+          "conditions_checked": true,
+          "placement": "regular"
+        },
+        "id": "luggage-1",
+        "marker_id": "luggage-marker",
+        "node_id": "resolved",
+        "participant_ids": [
+          "luggage-owner"
+        ],
+        "priority": "high",
+        "reaction_deadline": 75.0,
+        "reaction_time": null,
+        "recommendation": "Сохраняйте порядок: проверить место, помочь, проверить результат.",
+        "resolution": "resolved",
+        "route_point_id": "c2-luggage",
+        "scenario_id": "luggage-in-aisle",
+        "scenario_version": "b4-1.0.0-draft",
+        "service_remaining": null,
+        "state": "completed",
+        "successful": true,
+        "summary": "Багаж размещён, проход проверен и свободен.",
+        "text": "Чемодан в проходе",
+        "text_status": "draft",
+        "type": "safety",
+        "verification_status": "unverified_missing_dataset"
+      },
+      {
+        "appeared_at": 0.0,
+        "appears_at": 0,
+        "arrived_at": 4.0,
+        "assigned_staff_id": "staff-1",
+        "carriage_id": "carriage-1",
+        "id": "blanket-1",
+        "marker_id": "blanket-marker",
+        "participant_ids": [
+          "blanket-passenger"
+        ],
+        "priority": "normal",
+        "reaction_deadline": 90.0,
+        "reaction_time": null,
+        "resolution": "served",
+        "route_point_id": "c1-blanket",
+        "service_remaining": null,
+        "state": "completed",
+        "success_explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "text": "Пассажир просит плед.",
+        "text_status": "draft",
+        "timeout_explanation": "Сотрудник не прибыл до срока: просьба осталась без помощи, доверие снизилось.",
+        "type": "service"
+      },
+      {
+        "appeared_at": 100.0,
+        "appears_at": 100,
+        "arrived_at": 100.0,
+        "assigned_staff_id": "staff-1",
+        "carriage_id": "carriage-1",
+        "conditions": {
+          "relocation": "available"
+        },
+        "content_status": "draft",
+        "critical_decision_time": null,
+        "facts": {
+          "agreement_verified": true,
+          "conditions_checked": true,
+          "solution": "relocation"
+        },
+        "id": "children-1",
+        "marker_id": "children-marker",
+        "node_id": "resolved",
+        "participant_ids": [
+          "complainant",
+          "family"
+        ],
+        "priority": "normal",
+        "reaction_deadline": 190.0,
+        "reaction_time": null,
+        "recommendation": "Проверяйте возможность пересадки до обещания и учитывайте обе стороны.",
+        "resolution": "resolved",
+        "route_point_id": "c1-blanket",
+        "scenario_id": "children-disturb",
+        "scenario_version": "b4-1.0.0-draft",
+        "service_remaining": null,
+        "state": "completed",
+        "successful": true,
+        "summary": "Обе стороны подтвердили выполненное решение.",
+        "text": "Пассажиру мешают дети",
+        "text_status": "draft",
+        "type": "conflict",
+        "verification_status": "unverified_missing_dataset"
+      },
+      {
+        "appeared_at": 200.0,
+        "appears_at": 200,
+        "arrived_at": 204.0,
+        "assigned_staff_id": "staff-2",
+        "carriage_id": "carriage-2",
+        "id": "table-1",
+        "marker_id": "table-marker",
+        "participant_ids": [
+          "table-passenger"
+        ],
+        "priority": "normal",
+        "reaction_deadline": 300.0,
+        "reaction_time": null,
+        "resolution": "served",
+        "route_point_id": "c2-table",
+        "service_remaining": null,
+        "state": "completed",
+        "success_explanation": "Просьба выполнена после прибытия и обслуживания; доверие выросло. На безопасность обычный сервис не влияет.",
+        "text": "Пассажир просит убрать столик.",
+        "text_status": "draft",
+        "timeout_explanation": "Сотрудник не прибыл до срока: просьба осталась без помощи, доверие снизилось.",
+        "type": "service"
+      },
+      {
+        "appeared_at": 260.0,
+        "appears_at": 260,
+        "arrived_at": 260.0,
+        "assigned_staff_id": "staff-2",
+        "carriage_id": "carriage-2",
+        "conditions": {
+          "seat_reason": "mistake"
+        },
+        "content_status": "draft",
+        "critical_decision_time": null,
+        "facts": {
+          "conditions_checked": true,
+          "seat_verified": true,
+          "solution": "guided_to_ticket"
+        },
+        "id": "seat-1",
+        "marker_id": "seat-marker",
+        "node_id": "resolved",
+        "participant_ids": [
+          "seated-passenger",
+          "seat-holder"
+        ],
+        "priority": "normal",
+        "reaction_deadline": 350.0,
+        "reaction_time": null,
+        "recommendation": "Сначала проверьте обстоятельства, затем помогите и проверьте результат.",
+        "resolution": "resolved",
+        "route_point_id": "c2-table",
+        "scenario_id": "wrong-seat",
+        "scenario_version": "b4-1.0.0-draft",
+        "service_remaining": null,
+        "state": "completed",
+        "successful": true,
+        "summary": "Оба пассажира размещены, результат проверен.",
+        "text": "Пассажир не на своём месте",
+        "text_status": "draft",
+        "type": "conflict",
+        "verification_status": "unverified_missing_dataset"
+      }
+    ],
+    "outcome": "successful",
+    "recommendation": "Разберите сохранённые действия и объяснения по каждому обращению.",
+    "scales": {
+      "loyalty": {
+        "blanket-passenger": 58,
+        "complainant": 58,
+        "family": 56,
+        "luggage-owner": 58,
+        "seat-holder": 57,
+        "seated-passenger": 58,
+        "table-passenger": 56
+      },
+      "overall_loyalty": 57.285714285714285,
+      "safety": 100
+    },
+    "scenario_id": "mvp-trip",
+    "scenario_version": "b4-1.0.0-draft",
+    "scenario_versions": {
+      "children-disturb": "b4-1.0.0-draft",
+      "luggage-in-aisle": "b4-1.0.0-draft",
+      "wrong-seat": "b4-1.0.0-draft"
+    },
+    "simulation_mode": "full_b4",
+    "simulation_version": "b4-1.0.0-draft",
+    "sources": {
+      "children-disturb": [
+        {
+          "file": "MVPHeadOfTrain.txt",
+          "section": "6. Собрать содержание одного рейса",
+          "status": "provided_scope_not_training_standard"
+        },
+        {
+          "dataset_reference": "№ 10 упомянут в концепте; оригинал отсутствует",
+          "file": "ConceptHeadOfTrain.txt",
+          "section": "Пассажиру мешают дети",
+          "status": "concept_only_dataset_missing"
+        }
+      ],
+      "luggage-in-aisle": [
+        {
+          "file": "MVPHeadOfTrain.txt",
+          "section": "6. Собрать содержание одного рейса",
+          "status": "provided_scope_not_training_standard"
+        },
+        {
+          "dataset_reference": "№ 14 упомянут в концепте; оригинал отсутствует",
+          "file": "ConceptHeadOfTrain.txt",
+          "section": "Чемодан в проходе",
+          "status": "concept_only_dataset_missing"
+        }
+      ],
+      "wrong-seat": [
+        {
+          "file": "MVPHeadOfTrain.txt",
+          "section": "6. Собрать содержание одного рейса",
+          "status": "provided_scope_not_training_standard"
+        },
+        {
+          "dataset_reference": "Название и существенное условие заданы MVP; номер ситуации неизвестен",
+          "file": "ConceptHeadOfTrain.txt",
+          "section": "Обучение через рабочие ситуации; точного сценария о месте в концепте нет",
+          "status": "concept_only_dataset_missing"
+        }
+      ]
+    },
+    "state_version": 31,
+    "summary": "Все пять обращений обработаны.",
+    "text_status": "draft",
+    "trip_id": "47E0D30F25CD4FD99B59BDA93B87A745",
+    "verification_status": "unverified_missing_dataset",
+    "progress": {
+      "earned_points": 87,
+      "awarded_points": 12,
+      "competencies": [
+        {
+          "id": "communication",
+          "applicable": true,
+          "score": 3,
+          "max_score": 5,
+          "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля.",
+          "evidence": [
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 1; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 2; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 3; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 4; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 5; оценка не вычисляется клиентом."
+            }
+          ]
+        },
+        {
+          "id": "safety",
+          "applicable": true,
+          "score": 5,
+          "max_score": 5,
+          "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля.",
+          "evidence": [
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 1; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 2; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 3; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 4; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 5; оценка не вычисляется клиентом."
+            }
+          ]
+        },
+        {
+          "id": "prioritization",
+          "applicable": true,
+          "score": 4,
+          "max_score": 5,
+          "reason": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5: проверка отображения серверного поля.",
+          "evidence": [
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 1; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 2; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 3; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 4; оценка не вычисляется клиентом."
+            },
+            {
+              "request_id": "b97d3c52feb3486c921b991513740bf2",
+              "reason": "Синтетическое основание 5; оценка не вычисляется клиентом."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "leaderboard": {
+    "scope": "crew",
+    "scope_name": "Тестовая бригада А5",
+    "own_rank": 4,
+    "page": 1,
+    "page_size": 3,
+    "total": 11,
+    "entries": [
+      {
+        "rank": 1,
+        "display_name": "Тестовый участник 1",
+        "points": 200,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 2,
+        "display_name": "Тестовый участник 2",
+        "points": 193,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 3,
+        "display_name": "Тестовый участник 3",
+        "points": 186,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 4,
+        "display_name": "Тестовый участник 4",
+        "points": 179,
+        "is_demo": false,
+        "is_self": true
+      },
+      {
+        "rank": 5,
+        "display_name": "Тестовый участник 5",
+        "points": 172,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 6,
+        "display_name": "Тестовый участник 6",
+        "points": 165,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 7,
+        "display_name": "Тестовый участник 7",
+        "points": 158,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 8,
+        "display_name": "Тестовый участник 8",
+        "points": 151,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 9,
+        "display_name": "Тестовый участник 9",
+        "points": 144,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 10,
+        "display_name": "Тестовый участник 10",
+        "points": 137,
+        "is_demo": true,
+        "is_self": false
+      },
+      {
+        "rank": 11,
+        "display_name": "Тестовый участник 11",
+        "points": 130,
+        "is_demo": true,
+        "is_self": false
+      }
+    ]
+  },
+  "notifications": {
+    "page": 1,
+    "page_size": 3,
+    "total": 8,
+    "third_carriage_unlocked": true,
+    "entries": [
+      {
+        "id": "test-0",
+        "title": "Вагон «Комфорт» открыт",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-1",
+        "title": "Тестовое уведомление 2",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-2",
+        "title": "Тестовое уведомление 3",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-3",
+        "title": "Тестовое уведомление 4",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-4",
+        "title": "Тестовое уведомление 5",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-5",
+        "title": "Тестовое уведомление 6",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-6",
+        "title": "Тестовое уведомление 7",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      },
+      {
+        "id": "test-7",
+        "title": "Тестовое уведомление 8",
+        "message": "СИНТЕТИЧЕСКИЙ ПРИМЕР А5. Будущий контент: рейс третьего вагона пока недоступен.",
+        "created_at": "2026-09-27T12:00:00Z"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://main.gd" id="1"]
 [ext_resource type="Theme" path="res://theme/train_theme.tres" id="2"]
@@ -8,6 +8,11 @@
 [ext_resource type="PackedScene" path="res://scenes/debrief.tscn" id="6"]
 [ext_resource type="Script" path="res://scripts/session_api.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/ui_diagnostics.gd" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/report.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/profile.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/leaderboard.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/notifications.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/progress_api.tscn" id="13"]
 
 [node name="HeadOfTrain" type="Control"]
 layout_mode = 3
@@ -57,6 +62,30 @@ custom_minimum_size = Vector2(0, 44)
 text = "Восстановить связь"
 autowrap_mode = 3
 
+[node name="Navigation" type="HFlowContainer" parent="Layout"]
+layout_mode = 2
+alignment = 1
+
+[node name="Trip" type="Button" parent="Layout/Navigation"]
+layout_mode = 2
+text = "Рейс"
+
+[node name="Report" type="Button" parent="Layout/Navigation"]
+layout_mode = 2
+text = "Отчёты"
+
+[node name="Profile" type="Button" parent="Layout/Navigation"]
+layout_mode = 2
+text = "Профиль"
+
+[node name="Leaderboard" type="Button" parent="Layout/Navigation"]
+layout_mode = 2
+text = "Рейтинг"
+
+[node name="Notifications" type="Button" parent="Layout/Navigation"]
+layout_mode = 2
+text = "Уведомления"
+
 [node name="Screens" type="TabContainer" parent="Layout"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -81,12 +110,34 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="Report" parent="Layout/Screens" instance=ExtResource("9")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Profile" parent="Layout/Screens" instance=ExtResource("10")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Leaderboard" parent="Layout/Screens" instance=ExtResource("11")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Notifications" parent="Layout/Screens" instance=ExtResource("12")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ProgressAPI" parent="." instance=ExtResource("13")]
+
 [node name="SessionAPI" type="Node" parent="."]
 script = ExtResource("7")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="SessionAPI"]
 timeout = 8.0
 body_size_limit = 1048576
+
+[node name="Poll" type="Timer" parent="SessionAPI"]
+wait_time = 1.0
+autostart = true
 
 [node name="UIDiagnostics" type="Node" parent="."]
 script = ExtResource("8")
@@ -95,6 +146,7 @@ script = ExtResource("8")
 [connection signal="start_requested" from="Layout/Screens/StartScreen" to="." method="_on_start"]
 [connection signal="health_requested" from="Layout/Screens/StartScreen" to="." method="_on_health"]
 [connection signal="request_selected" from="Layout/Screens/TripScreen" to="." method="_on_request_selected"]
+[connection signal="assignment_requested" from="Layout/Screens/TripScreen" to="." method="_on_assignment_requested"]
 [connection signal="back_requested" from="Layout/Screens/TripScreen" to="." method="_on_back_to_start"]
 [connection signal="choice_selected" from="Layout/Screens/Decision" to="." method="_on_choice_selected"]
 [connection signal="cancelled" from="Layout/Screens/Decision" to="." method="_on_back_to_trip"]
@@ -104,3 +156,24 @@ script = ExtResource("8")
 [connection signal="state_received" from="SessionAPI" to="." method="_on_state_received"]
 [connection signal="report_received" from="SessionAPI" to="." method="_on_report_received"]
 [connection signal="request_completed" from="SessionAPI/HTTPRequest" to="SessionAPI" method="_on_response"]
+[connection signal="timeout" from="SessionAPI/Poll" to="SessionAPI" method="_on_poll"]
+[connection signal="pressed" from="Layout/Navigation/Trip" to="." method="_on_back_to_start"]
+[connection signal="pressed" from="Layout/Navigation/Report" to="." method="_open_reports"]
+[connection signal="pressed" from="Layout/Navigation/Profile" to="." method="_open_profile"]
+[connection signal="pressed" from="Layout/Navigation/Leaderboard" to="." method="_open_leaderboard"]
+[connection signal="pressed" from="Layout/Navigation/Notifications" to="." method="_open_notifications"]
+[connection signal="debrief_requested" from="Layout/Screens/Report" to="." method="_open_debrief"]
+[connection signal="refresh_requested" from="Layout/Screens/Report" to="." method="_refresh_report"]
+[connection signal="report_requested" from="Layout/Screens/Report" to="." method="_open_archived_report"]
+[connection signal="replay_requested" from="Layout/Screens/Report" to="." method="_on_back_to_start"]
+[connection signal="report_requested" from="Layout/Screens/Debrief" to="." method="_return_to_report"]
+[connection signal="refresh_requested" from="Layout/Screens/Profile" to="." method="_open_profile"]
+[connection signal="report_requested" from="Layout/Screens/Profile" to="." method="_open_archived_report"]
+[connection signal="replay_requested" from="Layout/Screens/Profile" to="." method="_on_back_to_start"]
+[connection signal="list_requested" from="Layout/Screens/Leaderboard" to="." method="_load_leaderboard"]
+[connection signal="replay_requested" from="Layout/Screens/Leaderboard" to="." method="_on_back_to_start"]
+[connection signal="list_requested" from="Layout/Screens/Notifications" to="." method="_load_notifications"]
+[connection signal="replay_requested" from="Layout/Screens/Notifications" to="." method="_on_back_to_start"]
+[connection signal="loading" from="ProgressAPI" to="." method="_on_progress_loading"]
+[connection signal="received" from="ProgressAPI" to="." method="_on_progress_received"]
+[connection signal="failed" from="ProgressAPI" to="." method="_on_progress_failed"]

@@ -8,6 +8,7 @@ atlas = ExtResource("2")
 region = Rect2(29, 66, 338, 274)
 
 [node name="RequestMarker" type="Control"]
+z_index = 2
 custom_minimum_size = Vector2(52, 48)
 offset_right = 52.0
 offset_bottom = 48.0

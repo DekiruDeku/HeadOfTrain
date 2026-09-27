@@ -1,2 +1,7 @@
 .godot/
 *.tmp
+
+# GDSkills agent vision scratch (do not commit)
+.gdskills/
+
+.godot/

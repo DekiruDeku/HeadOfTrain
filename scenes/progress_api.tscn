@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/progress_api.gd" id="1"]
+
+[node name="ProgressAPI" type="Node"]
+script = ExtResource("1")
+
+[node name="ProfileRequest" type="HTTPRequest" parent="."]
+timeout = 10.0
+body_size_limit = 16777216
+
+[node name="LeaderboardRequest" type="HTTPRequest" parent="."]
+timeout = 10.0
+body_size_limit = 16777216
+
+[node name="NotificationsRequest" type="HTTPRequest" parent="."]
+timeout = 10.0
+body_size_limit = 16777216
+
+[node name="ReportRequest" type="HTTPRequest" parent="."]
+timeout = 10.0
+body_size_limit = 16777216
+
+[connection signal="request_completed" from="ProfileRequest" to="." method="_on_response" binds=["profile"]]
+[connection signal="request_completed" from="LeaderboardRequest" to="." method="_on_response" binds=["leaderboard"]]
+[connection signal="request_completed" from="NotificationsRequest" to="." method="_on_response" binds=["notifications"]]
+[connection signal="request_completed" from="ReportRequest" to="." method="_on_response" binds=["archive"]]

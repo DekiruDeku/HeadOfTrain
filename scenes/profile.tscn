@@ -1,0 +1,88 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/progress_screen.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/profile.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/progress_row.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/paged_records.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/future_carriage.tscn" id="5"]
+
+[node name="Profile" instance=ExtResource("1")]
+script = ExtResource("2")
+
+[node name="Title" parent="Margin/Content/Header/Text" index="1"]
+text = "Профиль"
+
+[node name="Subtitle" parent="Margin/Content/Header/Text" index="2"]
+text = "Ваш сохранённый учебный прогресс"
+
+[node name="Identity" type="Label" parent="Margin/Content/Body" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Игрок · очки · завершённые рейсы"
+autowrap_mode = 3
+
+[node name="SkillsTitle" type="Label" parent="Margin/Content/Body" index="1"]
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Компетенции"
+
+[node name="Skills" type="GridContainer" parent="Margin/Content/Body" index="2"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
+
+[node name="Communication" parent="Margin/Content/Body/Skills" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Safety" parent="Margin/Content/Body/Skills" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Prioritization" parent="Margin/Content/Body/Skills" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AchievementsTitle" type="Label" parent="Margin/Content/Body" index="3"]
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Три достижения"
+
+[node name="Achievements" type="GridContainer" parent="Margin/Content/Body" index="4"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
+
+[node name="FirstTrip" parent="Margin/Content/Body/Achievements" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SafeTrip" parent="Margin/Content/Body/Achievements" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CheckedConditions" parent="Margin/Content/Body/Achievements" instance=ExtResource("3")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Recommendation" type="Label" parent="Margin/Content/Body" index="5"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Рекомендация для следующей тренировки"
+autowrap_mode = 3
+
+[node name="ArchiveTitle" type="Label" parent="Margin/Content/Body" index="6"]
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Сохранённые отчёты"
+
+[node name="Reports" parent="Margin/Content/Body" index="7" instance=ExtResource("4")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="FutureCarriage" parent="Margin/Content/Body" index="8" instance=ExtResource("5")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="activated" from="Margin/Content/Body/Reports" to="." method="_on_report"]

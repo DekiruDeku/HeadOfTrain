@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/comfort.png" id="1"]
+[ext_resource type="Script" path="res://scripts/future_carriage.gd" id="2"]
+
+[node name="FutureCarriage" type="PanelContainer"]
+script = ExtResource("2")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Content"]
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Вагон 3 · «Комфорт»"
+autowrap_mode = 3
+
+[node name="Image" type="TextureRect" parent="Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 160)
+texture = ExtResource("1")
+expand_mode = 1
+stretch_mode = 6
+mouse_filter = 2
+
+[node name="Unlock" type="Label" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "Открытие пока не подтверждено сервером"
+autowrap_mode = 3
+
+[node name="Description" type="Label" parent="Content"]
+layout_mode = 2
+text = "БУДУЩИЙ КОНТЕНТ\nУчебный рейс третьего вагона пока недоступен. Можно повторить существующий рейс в двух вагонах."
+autowrap_mode = 3
+
+[node name="Unavailable" type="Button" parent="Content"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Рейс третьего вагона · скоро"
+autowrap_mode = 3

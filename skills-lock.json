@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "106acf230014cbb43ca34e6410371321b56ca742f9ee0442e8ec05bf02eb0384"
+    },
+    "game-feel": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/disciplines/game-feel/SKILL.md",
+      "computedHash": "03b9da7e669419e69dfeea8abe0a542e051b2ea1ef8e18cd8a39cb32855416b3"
+    },
+    "game-ui-ux": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/disciplines/game-ui-ux/SKILL.md",
+      "computedHash": "4aeb677be89029728154d40bb1d98e07d809f019ff8cd0e9188fb4a1f9d51255"
+    },
+    "godot-agent-vision": {
+      "source": "thedivergentai/gd-agentic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot-agent-vision/SKILL.md",
+      "computedHash": "34d09c4574ec92240c43b47e635fd0fc9460395da217ebdcf8c3c03f28b0a3e2"
+    },
+    "godot-animation": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot/godot-animation/SKILL.md",
+      "computedHash": "e67a25f0a1ea1af9d87905a294d9271920843fd953f8fe56bd6888beccda7bd9"
+    },
+    "godot-particles": {
+      "source": "thedivergentai/gd-agentic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot-particles/SKILL.md",
+      "computedHash": "9b6fd8cdb856874bf88746da79514a74d3b22480fce117f8d26578a269a46c71"
+    },
+    "godot-shaders-basics": {
+      "source": "thedivergentai/gd-agentic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot-shaders-basics/SKILL.md",
+      "computedHash": "653cb019eb0f52e0280c71e0acfd0e585a0c2616251340babc7bfe4837afbdcc"
+    },
+    "godot-tweening": {
+      "source": "thedivergentai/gd-agentic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot-tweening/SKILL.md",
+      "computedHash": "3b95458c3b6d48d08a2af3035965e687fc798ef1c400a62afea927136365837e"
+    },
+    "godot-ui-control": {
+      "source": "gamedev-skills/awesome-gamedev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot/godot-ui-control/SKILL.md",
+      "computedHash": "522dec0a123c1f780d542406a44a8f81770777ab5f2be8d1bd43bde995fdf6c7"
+    },
+    "godot-ui-theming": {
+      "source": "thedivergentai/gd-agentic-skills",
+      "sourceType": "github",
+      "skillPath": "skills/godot-ui-theming/SKILL.md",
+      "computedHash": "7ff7d41a1ec2e791cae7d173e4d6ebc00cc2d135f28a3f49b26a17784279b4ff"
+    }
+  }
+}

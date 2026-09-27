@@ -32,14 +32,14 @@ theme_override_constants/separation = 18
 [node name="Badge" type="Label" parent="Margin/Panel/Content"]
 layout_mode = 2
 theme_type_variation = &"Small"
-text = "ПЕРВЫЙ СЦЕНАРИЙ · УЧЕБНЫЙ ЧЕРНОВИК"
+text = "ОБРАЩЕНИЕ · УЧЕБНЫЙ ЧЕРНОВИК"
 autowrap_mode = 3
 
 [node name="Title" type="Label" parent="Margin/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Title"
-text = "Чемодан в проходе"
+text = "Решение по обращению"
 autowrap_mode = 3
 
 [node name="Place" type="Label" parent="Margin/Panel/Content"]
@@ -60,6 +60,20 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Muted"
 text = "Выберите действие. Последствия и оценки определяет сервер."
+autowrap_mode = 3
+
+[node name="LastEffect" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Подтверждённое последствие предыдущего решения"
+autowrap_mode = 3
+
+[node name="CriticalTimer" type="Label" parent="Margin/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Section"
+text = "ПАУЗА РЕЙСА · На критическое решение: —"
 autowrap_mode = 3
 
 [node name="Choice1" type="Button" parent="Margin/Panel/Content"]
