@@ -14,14 +14,14 @@ static func facts(value: Dictionary) -> String:
 			var detail := facts(value[id])
 			if not detail.is_empty():
 				parts.append(incidents[id] + ": " + detail)
-	var labels := {"conditions_checked": "Условия проверены", "agreement_verified": "Договорённость проверена", "seat_verified": "Места проверены"}
+	var labels := {"conditions_checked": "Условия проверены", "interests_checked":"Интересы обеих сторон уточнены", "tickets_checked":"Билеты проверены", "moved":"Пассажиру помогли пересесть", "agreement_verified": "Договорённость проверена", "seat_verified": "Места проверены"}
 	for key in labels:
 		if value.has(key) and value[key] is bool:
 			parts.append(labels[key] + (": да" if value[key] else ": нет"))
 	if value.has("aisle_clear"):
 		parts.append("Проход свободен" if value.aisle_clear else "Проход не освобождён")
 	if value.get("placement") != null:
-		parts.append("Размещение: " + ("обычное место" if value.placement == "regular" else "альтернативное место"))
+		parts.append("Размещение: " + {"regular":"обычное место","alternative":"альтернативное место"}.get(value.placement,"способ не уточнён"))
 	if value.has("alternative_checked"):
 		parts.append("Другое место проверено" if value.alternative_checked else "Другое место не проверено")
 	return ". ".join(parts)
@@ -30,7 +30,7 @@ static func effects(value: Dictionary) -> String:
 	var parts: Array[String] = []
 	var participants := {"luggage-owner": "владелец багажа", "blanket-passenger": "пассажир с пледом", "table-passenger": "пассажир за столиком", "complainant": "пассажир с жалобой", "family": "семья", "seated-passenger": "сидящий пассажир", "seat-holder": "владелец места"}
 	for id in value.get("loyalty_deltas", {}):
-		parts.append("Лояльность · %s: %s" % [participants.get(id, id), metric(value.loyalty_deltas[id])])
+		parts.append("Лояльность · %s: %s" % [participants.get(id, "пассажир"), metric(value.loyalty_deltas[id])])
 	if value.has("loyalty_delta") and value.get("loyalty_deltas", {}).is_empty():
 		parts.append("Изменение лояльности: %s" % value.loyalty_delta)
 	if value.has("safety_delta"):
@@ -38,7 +38,10 @@ static func effects(value: Dictionary) -> String:
 	if value.has("facts"):
 		parts.append(facts(value.facts))
 	if not value.get("critical_marks", []).is_empty():
-		parts.append("Критические отметки: " + ", ".join(value.critical_marks))
+		var marks: Array[String] = []
+		for code in value.critical_marks:
+			marks.append({"aisle_left_blocked":"проход оставлен заблокированным","unsafe_placement":"небезопасное размещение багажа"}.get(code,"нарушение безопасности"))
+		parts.append("Критические отметки: " + ", ".join(marks))
 	return "\n".join(parts) if not parts.is_empty() else "Изменений шкал и фактов сервер не указал."
 
 static func scales(value: Dictionary) -> String:

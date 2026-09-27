@@ -26,9 +26,9 @@ func _ready() -> void:
 		check(app.progress_api.validate("archive", real_report, {"trip_id": real_report.trip_id}), "Accept B4 report " + route)
 		app.report_screen.present(real_report)
 		app.report_screen._select_section("incidents")
-		check(app.report_screen.get_node("%Records").total == real_report.incidents.size(), "Every incident available")
-		app.report_screen.get_node("%Records")._on_next()
-		check(app.report_screen.get_node("%Records").page == 2, "Fifth incident on page two")
+		check(app.report_screen.records.size() == real_report.incidents.size(), "Every incident available")
+		app.report_screen._move_record(1)
+		check(app.report_screen.record_page == 1, "Next incident opens on its own page")
 		app.debrief.present_report(real_report)
 		for i in real_report.history.size():
 			app.debrief.select_evidence(real_report.history[i].request_id)
@@ -36,16 +36,12 @@ func _ready() -> void:
 			check(app.debrief.get_node("%Evidence").text.contains(real_report.history[i].request_id), "Evidence ID preserved")
 	app.report_screen.present(report)
 	app.report_screen._select_section("assessment")
-	var records = app.report_screen.get_node("%Records")
 	var all_rows: Array = []
 	while true:
-		for row in records.rows:
-			if row.visible:
-				all_rows.append(row.get_node("%Heading").text)
-		if records.get_node("%Next").disabled:
-			break
-		records._on_next()
-	check(all_rows.size() == records.total and records.total > 15, "All assessment rows accessible beyond node pool")
+		all_rows.append(app.report_screen.get_node("%RecordTitle").text)
+		if app.report_screen.get_node("%Next").disabled: break
+		app.report_screen._move_record(1)
+	check(all_rows.size() == app.report_screen.records.size() and all_rows.size() > 15, "Every assessment record remains accessible")
 	var entries: Array = fixture.leaderboard.entries
 	for scope in ["crew", "depot", "company"]:
 		for page in range(1, 5):
@@ -57,7 +53,7 @@ func _ready() -> void:
 			check(not app.progress_api.validate("leaderboard", payload, {"scope": "different", "page": page}), "Reject stale filter")
 			app.leaderboard_screen.scope = scope
 			app.leaderboard_screen.present(payload)
-			check(app.leaderboard_screen.get_node("%Records").records.size() == payload.entries.size(), "No rank row lost")
+			check(app.leaderboard_screen.rows.size() == payload.entries.size(), "No rank row lost")
 	invalid = fixture.leaderboard.duplicate(true)
 	check(not app.progress_api.validate("leaderboard", invalid, {"scope": "crew", "page": 1}), "Reject oversized server page instead of truncating")
 	var empty: Dictionary = fixture.leaderboard.duplicate(true)
@@ -66,7 +62,7 @@ func _ready() -> void:
 	empty.own_rank = null
 	check(app.progress_api.validate("leaderboard", empty, {"scope": "crew", "page": 1}), "Empty leaderboard accepted")
 	app.leaderboard_screen.present(empty)
-	check(app.leaderboard_screen.get_node("%Records").get_node("%Empty").visible, "Empty state visible")
+	check(app.leaderboard_screen.get_node("%Empty").visible, "Empty state visible")
 	var notice: Dictionary = fixture.notifications.duplicate(true)
 	notice.entries = notice.entries.slice(0, 3)
 	check(app.progress_api.validate("notifications", notice, {"page": 1}), "Notification proposal accepted")

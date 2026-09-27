@@ -1,0 +1,64 @@
+[gd_resource type="Theme" load_steps=8 format=3]
+[ext_resource type="FontFile" path="res://assets/fonts/RobotoCondensed.ttf" id="1"]
+[ext_resource type="FontFile" path="res://assets/fonts/Oswald-Bold.ttf" id="2"]
+[sub_resource type="StyleBoxEmpty" id="Empty"]
+[sub_resource type="StyleBoxEmpty" id="Panel"]
+content_margin_left = 24.0
+content_margin_top = 22.0
+content_margin_right = 24.0
+content_margin_bottom = 22.0
+[sub_resource type="StyleBoxFlat" id="Scroll"]
+bg_color = Color(0.1, 0.18, 0.2, 0.12)
+content_margin_left = 3.0
+content_margin_right = 3.0
+[sub_resource type="StyleBoxFlat" id="Grabber"]
+bg_color = Color(0.50, 0.45, 0.35, 0.65)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_left = 3
+corner_radius_bottom_right = 3
+[sub_resource type="StyleBoxFlat" id="Tooltip"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.145, 0.205, 0.25, 0.98)
+border_width_left = 1
+border_width_right = 1
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.827, 0.642, 0.352, 1)
+[resource]
+TooltipPanel/styles/panel = SubResource("Tooltip")
+TooltipLabel/colors/font_color = Color(0.96, 0.94, 0.86, 1)
+TooltipLabel/font_sizes/font_size = 19
+default_font = ExtResource("1")
+default_font_size = 23
+Palette/colors/ink = Color(0.09, 0.14, 0.17, 1)
+Palette/colors/paper = Color(0.92, 0.899, 0.85, 1)
+Palette/colors/dark = Color(0.145, 0.205, 0.25, 1)
+Palette/colors/background = Color(0.435, 0.474, 0.451, 1)
+Palette/colors/gold = Color(0.827, 0.642, 0.352, 1)
+Palette/colors/sage = Color(0.59, 0.65, 0.55, 1)
+Palette/colors/muted = Color(0.4, 0.42, 0.39, 1)
+Heading/fonts/font = ExtResource("2")
+Label/colors/font_color = Color(0.09, 0.14, 0.17, 1)
+Label/constants/outline_size = 0
+Label/constants/line_spacing = 3
+PanelContainer/styles/panel = SubResource("Panel")
+Button/font_sizes/font_size = 22
+Button/styles/normal = SubResource("Empty")
+Button/styles/hover = SubResource("Empty")
+Button/styles/pressed = SubResource("Empty")
+Button/styles/disabled = SubResource("Empty")
+Button/styles/focus = SubResource("Empty")
+Button/colors/font_color = Color(0, 0, 0, 0)
+Button/colors/font_hover_color = Color(0, 0, 0, 0)
+Button/colors/font_focus_color = Color(0, 0, 0, 0)
+Button/colors/font_pressed_color = Color(0, 0, 0, 0)
+Button/colors/font_disabled_color = Color(0, 0, 0, 0)
+VScrollBar/styles/scroll = SubResource("Scroll")
+VScrollBar/styles/grabber = SubResource("Grabber")
+VScrollBar/styles/grabber_highlight = SubResource("Grabber")
+VScrollBar/styles/grabber_pressed = SubResource("Grabber")
+

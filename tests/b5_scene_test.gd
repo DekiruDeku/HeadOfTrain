@@ -10,7 +10,11 @@ func _ready() -> void:
 		var profile: Dictionary = fixture(state + "/profile").profile
 		check(app.progress_api.validate("profile", profile, {}), "B5 profile " + state)
 		app.profile_screen.present(profile)
-		check(app.profile_screen.get_node("%Reports").total == profile.report_ids.size() + profile.best_results.size(), "Complete archive and records")
+		app.profile_screen._show_archive()
+		check(app.profile_screen.records.filter(func(r): return r.has("target")).size() == profile.report_ids.size(), "Complete profile archive")
+		app.profile_screen._show_best()
+		check(app.profile_screen.records.filter(func(r): return r.has("target")).size() == profile.best_results.size(), "Complete personal records")
+		app.profile_screen._close_modal(true)
 		var invalid: Dictionary = profile.duplicate(true)
 		invalid.player_id = "other"
 		check(not app.progress_api.validate("profile", invalid, {}), "Reject foreign profile")
@@ -34,16 +38,14 @@ func _ready() -> void:
 		invalid = report.duplicate(true)
 		invalid.competencies[0].evidence[0].history_indices = [99999]
 		check(not app.progress_api.valid_report_extension(invalid), "Reject invalid evidence index")
-		var records = app.report_screen.get_node("%Records")
 		var visible_rows := 0
 		while true:
-			for row in records.rows:
-				if row.visible:
-					visible_rows += 1
-			if records.get_node("%Next").disabled:
-				break
-			records._on_next()
-		check(visible_rows == records.total, "Every evidence and scenario score accessible")
+			var shown: String = app.report_screen.get_node("%RecordTitle").text
+			check(shown == app.report_screen.records[visible_rows].title, "Exact assessment record is rendered")
+			visible_rows += 1
+			if app.report_screen.get_node("%Next").disabled: break
+			app.report_screen._move_record(1)
+		check(visible_rows == app.report_screen.records.size(), "Every evidence and scenario score accessible")
 	for scope in ["crew", "depot", "company"]:
 		var data: Dictionary = fixture("leaderboards/" + scope + "-1")
 		data.page_size = 3

@@ -42,7 +42,7 @@ func retry() -> void:
 	_source = "restore"
 	if not pending_post.is_empty():
 		var restored_source := str(pending_post.get("source", "restore"))
-		if restored_source in ["assignments", "dialog/open", "dialog/close"]:
+		if restored_source in ["assignments", "dialog/open", "dialog/close", "time"]:
 			_source = restored_source
 		_send("post", pending_post.path, pending_post.body)
 	else:
@@ -75,6 +75,9 @@ func _post(path: String, body: Dictionary) -> void:
 
 func assign(incident_id: String, staff_id: String) -> void:
 	_crew_command("assignments", {"incident_id": incident_id, "staff_id": staff_id})
+
+func set_time_speed(speed: int) -> void:
+	_crew_command("time", {"speed": speed})
 
 func open_dialog(incident_id: String) -> void:
 	_crew_command("dialog/open", {"incident_id": incident_id})
@@ -174,6 +177,7 @@ func _on_response(result: int, code: int, _headers: PackedStringArray, bytes: Pa
 			_send("current", "/api/trips/current")
 		return
 	trip = data.trip
+	$Poll.wait_time = 0.25 if int(trip.get("time_speed",1)) > 1 else 1.0
 	trip_id = trip.trip_id
 	report = {}
 	if not _save_session():
@@ -366,7 +370,7 @@ func _valid_trip(value: Variant) -> bool:
 	if Crew.enabled(value):
 		if not Crew.valid(value):
 			return false
-		if not value.paused:
+		if not value.paused or value.get("pause_reason") == "user":
 			return true
 	if value.status == "in_progress":
 		var dialog: Variant = value.get("dialog")
@@ -384,7 +388,7 @@ func _valid_acknowledgement(data: Dictionary) -> bool:
 	if pending_post.path == "/api/trips/start":
 		return data.get("player_id") == player_id and data.get("status") == "started" and data.get("trip_id") == data.trip.trip_id
 	var payload: Dictionary = JSON.parse_string(pending_post.body)
-	for operation in ["assignments", "dialog/open", "dialog/close"]:
+	for operation in ["assignments", "dialog/open", "dialog/close", "time"]:
 		if pending_post.path == "/api/trips/%s/%s" % [data.trip.trip_id, operation]:
 			if data.trip.get("simulation_mode") in ["crew_b3", "full_b4"]:
 				return _valid_b3_command(data.trip, payload, operation)
@@ -407,6 +411,8 @@ func _valid_b3_command(state: Dictionary, payload: Dictionary, operation: String
 	# Exact HTTP body/path are retained for retries; a successful replay is followed by GET.
 	if state.state_version <= payload.expected_state_version:
 		return false
+	if operation == "time":
+		return state.get("time_speed") == payload.get("speed")
 	for incident in state.incidents:
 		if incident.id != payload.incident_id:
 			continue
@@ -414,5 +420,5 @@ func _valid_b3_command(state: Dictionary, payload: Dictionary, operation: String
 			return incident.get("assigned_staff_id") == payload.staff_id and incident.state in ["en_route", "resolving"]
 		if operation == "dialog/open":
 			return state.paused and state.dialog is Dictionary and state.dialog.get("incident_id") == payload.incident_id
-		return operation == "dialog/close" and not state.paused and state.get("active_dialog_id") == null
+		return operation == "dialog/close" and state.get("pause_reason") != "dialog" and state.get("active_dialog_id") == null
 	return false

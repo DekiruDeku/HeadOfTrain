@@ -4,4 +4,8 @@
 # GDSkills agent vision scratch (do not commit)
 .gdskills/
 
-.godot/
+.agents/
+AGENTS.md
+skills-lock.json
+.DS_Store
+**/.DS_Store

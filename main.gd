@@ -9,6 +9,8 @@ const MENU_PANEL = preload("res://theme/menu_empty_panel.tres")
 var _screen_tween: Tween
 var _last_screen: Control
 var _menu_profile_requested := false
+var _leaving_decision := false
+var _decision_destination := 1
 ## All screens and components are saved in main.tscn and nested scenes.
 @onready var screens: TabContainer = %Screens
 @onready var start = %StartScreen
@@ -23,7 +25,18 @@ var _menu_profile_requested := false
 @onready var notifications_screen = %Notifications
 
 func _ready() -> void:
+	decision.retry_requested.connect(api.retry)
+	trip.time_speed_requested.connect(api.set_time_speed)
+	trip.retry_requested.connect(api.retry)
 	start.profile_requested.connect(_open_profile)
+	report_screen.profile_requested.connect(_open_profile)
+	profile_screen.leaderboard_requested.connect(_open_leaderboard)
+	profile_screen.notifications_requested.connect(_open_notifications)
+	leaderboard_screen.profile_requested.connect(_open_profile)
+	leaderboard_screen.notifications_requested.connect(_open_notifications)
+	notifications_screen.profile_requested.connect(_open_profile)
+	notifications_screen.leaderboard_requested.connect(_open_leaderboard)
+	notifications_screen.report_requested.connect(_open_archived_report)
 	start.leaderboard_requested.connect(_open_leaderboard)
 	start.notifications_requested.connect(_open_notifications)
 	screens.tab_changed.connect(_on_screen_changed)
@@ -32,9 +45,20 @@ func _ready() -> void:
 		api.bootstrap()
 
 func _on_screen_changed(index: int) -> void:
-	$Layout/Connection.visible = index != 0
-	$Layout/Navigation.visible = index != 0
-	if index == 0:
+	if index == 4: report_screen.reduced_motion = start.reduced_motion
+	if index == 5: profile_screen.reduced_motion = start.reduced_motion
+	if index == 6: leaderboard_screen.reduced_motion = start.reduced_motion
+	if index == 7: notifications_screen.reduced_motion = start.reduced_motion
+	# Decision is a modal over the same live trip, with its own input and animation.
+	trip.set_process_input(index == 1)
+	trip.visible = index in [1, 2]
+	screens.mouse_filter = Control.MOUSE_FILTER_IGNORE if index == 1 else Control.MOUSE_FILTER_STOP
+	if index == 2:
+		var focused := get_viewport().gui_get_focus_owner()
+		if focused: focused.release_focus()
+	$Layout/Connection.visible = index not in [0, 1, 2, 3, 4, 5, 6, 7]
+	$Layout/Navigation.visible = index not in [0, 1, 2, 3, 4, 5, 6, 7]
+	if index in [0, 1, 2, 3, 4, 5, 6, 7]:
 		screens.add_theme_stylebox_override("panel", MENU_PANEL)
 	else:
 		screens.remove_theme_stylebox_override("panel")
@@ -44,10 +68,21 @@ func _on_screen_changed(index: int) -> void:
 		_last_screen.modulate.a = 1.0
 	_last_screen = screens.get_current_tab_control()
 	# StartScreen owns its entrance. Other existing screens share a short fade.
-	if index != 0 and not start.reduced_motion:
+	if index not in [0, 1, 2, 3, 4, 5, 6, 7] and not start.reduced_motion:
 		_last_screen.modulate.a = 0.0
 		_screen_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		_screen_tween.tween_property(_last_screen, "modulate:a", 1.0, 0.24)
+
+func _show_screen(index: int) -> void:
+	if screens.current_tab == 2 and index != 2:
+		_decision_destination = index
+		if _leaving_decision: return
+		_leaving_decision = true
+		await decision.dismiss()
+		_leaving_decision = false
+		screens.current_tab = _decision_destination
+		return
+	screens.current_tab = index
 
 func _on_api_changed() -> void:
 	%ConnectionText.text = api.message + ("\n" + api.notice if not api.notice.is_empty() else "")
@@ -62,37 +97,41 @@ func _on_api_changed() -> void:
 		progress_api.profile()
 	decision.set_locked(locked)
 	trip.set_locked(locked)
+	trip.set_connection_message(api.message if not api.error_code.is_empty() else "")
+	decision.set_connection_message(api.message if not api.error_code.is_empty() else "")
 	debrief.set_locked(locked)
+	report_screen.set_locked(locked)
+	report_screen.reduced_motion = start.reduced_motion
 
 func _on_state_received(source: String) -> void:
 	if api.trip.is_empty():
-		screens.current_tab = 0
+		_show_screen(0)
 		return
 	trip.show_trip(api.trip)
 	if source == "poll" and (screens.current_tab >= 4 or (screens.current_tab == 3 and debrief.final_report)) and api.trip.status != "completed":
 		return
 	if Crew.enabled(api.trip) and api.trip.status == "in_progress":
-		if api.trip.paused:
+		if api.trip.paused and api.trip.get("pause_reason") != "user":
 			for incident in api.trip.incidents:
 				if incident.id == api.trip.dialog.incident_id:
 					decision.present(api.trip, incident, source != "poll")
-					screens.current_tab = 2
+					_show_screen(2)
 		elif source == "dialog/close":
-			screens.current_tab = after_close_tab
+			_show_screen(after_close_tab)
 		elif source != "poll" or screens.current_tab == 2:
-			screens.current_tab = 1
+			_show_screen(1)
 		return
 	if api.trip.status == "completed":
 		if announced_completion != api.trip.trip_id:
 			announced_completion = api.trip.trip_id
 			trip_completed.emit(api.trip.trip_id)
 		# Do not show an old report while the saved report is loading.
-		screens.current_tab = 1
+		_show_screen(1)
 	elif source == "action":
 		debrief.present_effect(api.trip.history.back(), api.trip)
-		screens.current_tab = 3
+		_show_screen(3)
 	else:
-		screens.current_tab = 1
+		_show_screen(1)
 	trip.scroll_vertical = 0
 
 func _on_report_received() -> void:
@@ -106,7 +145,7 @@ func _on_report_received() -> void:
 	requested_report_id = displayed_report.trip_id
 	report_screen.present(displayed_report)
 	report_screen.present_archive(api.saved_reports)
-	screens.current_tab = 4
+	_show_screen(4)
 
 func _on_start() -> void:
 	if not api.trip.is_empty() and api.trip.status == "in_progress":
@@ -118,11 +157,11 @@ func _on_health() -> void:
 	api.retry()
 
 func _on_back_to_start() -> void:
-	if Crew.enabled(api.trip) and api.trip.get("paused", false):
+	if Crew.enabled(api.trip) and api.trip.get("paused", false) and api.trip.get("pause_reason") != "user":
 		after_close_tab = 0
 		api.close_dialog()
 		return
-	screens.current_tab = 0
+	_show_screen(0)
 
 func _on_request_selected(incident_id: String) -> void:
 	if not api.ready_for_input:
@@ -138,7 +177,7 @@ func _on_request_selected(incident_id: String) -> void:
 					api.open_dialog(incident_id)
 				return
 			decision.present(api.trip, incident)
-			screens.current_tab = 2
+			_show_screen(2)
 			return
 
 func _on_choice_selected(incident_id: String, action_id: String) -> void:
@@ -150,11 +189,11 @@ func _on_back_to_trip() -> void:
 	if api.trip.is_empty():
 		_on_back_to_start()
 		return
-	if Crew.enabled(api.trip) and api.trip.get("paused", false):
+	if Crew.enabled(api.trip) and api.trip.get("paused", false) and api.trip.get("pause_reason") != "user":
 		after_close_tab = 1
 		api.close_dialog()
 		return
-	screens.current_tab = 1
+	_show_screen(1)
 
 func _on_assignment_requested(incident_id: String, staff_id: String) -> void:
 	api.assign(incident_id, staff_id)
@@ -173,7 +212,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 func _open_reports() -> void:
-	screens.current_tab = 4
+	_show_screen(4)
 	report_screen.present_archive(api.saved_reports)
 	if displayed_report.is_empty() and not api.report.is_empty():
 		_on_report_received()
@@ -181,18 +220,18 @@ func _open_reports() -> void:
 		report_screen.failed("Завершённых отчётов в этой сессии ещё нет. Выберите сохранённый рейс ниже.")
 
 func _return_to_report() -> void:
-	screens.current_tab = 4
+	_show_screen(4)
 
 func _open_debrief(request_id: String = "") -> void:
 	if displayed_report.is_empty():
 		return
 	debrief.present_report(displayed_report)
 	debrief.select_evidence(request_id)
-	screens.current_tab = 3
+	_show_screen(3)
 
 func _open_archived_report(id: String) -> void:
 	requested_report_id = id
-	screens.current_tab = 4
+	_show_screen(4)
 	progress_api.archived_report(id)
 
 func _refresh_report() -> void:
@@ -202,11 +241,12 @@ func _refresh_report() -> void:
 		_open_reports()
 
 func _open_profile() -> void:
-	screens.current_tab = 5
+	_show_screen(5)
 	progress_api.profile()
 
 func _open_leaderboard() -> void:
-	screens.current_tab = 6
+	leaderboard_screen.reduced_motion = start.reduced_motion
+	_show_screen(6)
 	_load_leaderboard(leaderboard_screen.scope, 1)
 
 func _load_leaderboard(scope: String, page: int) -> void:
@@ -214,8 +254,10 @@ func _load_leaderboard(scope: String, page: int) -> void:
 	progress_api.leaderboard(scope, page)
 
 func _open_notifications() -> void:
-	screens.current_tab = 7
+	notifications_screen.reduced_motion = start.reduced_motion
+	_show_screen(7)
 	_load_notifications(1)
+	progress_api.profile()
 
 func _load_notifications(page: int) -> void:
 	notifications_screen.requested_page = page
@@ -233,6 +275,7 @@ func _on_progress_failed(kind: String, message: String) -> void:
 func _on_progress_received(kind: String, value: Dictionary) -> void:
 	if kind == "profile":
 		start.present_profile(value)
+		notifications_screen.present_profile(value)
 	if kind == "archive":
 		displayed_report = value.duplicate(true)
 		api.remember_report(value)

@@ -1,23 +1,11 @@
-[gd_scene load_steps=5 format=3]
-
-[ext_resource type="PackedScene" path="res://scenes/progress_screen.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/notifications.gd" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/paged_records.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://scenes/future_carriage.tscn" id="4"]
-
-[node name="Notifications" instance=ExtResource("1")]
-script = ExtResource("2")
-
-[node name="Title" parent="Margin/Content/Header/Text" index="1"]
-text = "Уведомления"
-
-[node name="Subtitle" parent="Margin/Content/Header/Text" index="2"]
-text = "События вашего учебного прогресса"
-
-[node name="Records" parent="Margin/Content/Body" index="0" instance=ExtResource("3")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="FutureCarriage" parent="Margin/Content/Body" index="1" instance=ExtResource("4")]
-unique_name_in_owner = true
-layout_mode = 2
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/notifications.gd" id="1"]
+[ext_resource type="Theme" path="res://theme/notifications_theme.tres" id="2"]
+[node name="Notifications" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")

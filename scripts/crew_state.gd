@@ -56,9 +56,9 @@ static func valid(state: Dictionary) -> bool:
 			return false
 		if incident.get("reaction_remaining") != null and not number(incident.reaction_remaining):
 			return false
-	if state.paused and (state.get("active_dialog_id") == null or not state.get("dialog") is Dictionary):
+	if state.paused and state.get("pause_reason") != "user" and (state.get("active_dialog_id") == null or not state.get("dialog") is Dictionary):
 		return false
-	if state.paused and state.dialog.get("incident_id") not in incident_ids:
+	if state.paused and state.get("pause_reason") != "user" and state.dialog.get("incident_id") not in incident_ids:
 		return false
 	if state.get("dialog") is Dictionary and state.dialog.get("critical_remaining") != null and not number(state.dialog.critical_remaining):
 		return false
@@ -97,7 +97,7 @@ static func status_text(incident: Dictionary) -> String:
 		return "Пропущено · время решения истекло" if incident.get("resolution") == "decision_timeout" else "Пропущено · помощь не прибыла в срок"
 	if incident.get("resolution") == "not_verified":
 		return "Завершено · результат не проверен"
-	return {"resolved": "Решено", "issue": "Завершено · проблема осталась", "completed": "Завершено · итог в разборе"}.get(key, INCIDENT_STATES.get(key, key))
+	return {"resolved": "Решено", "issue": "Завершено · проблема осталась", "completed": "Завершено · итог в разборе"}.get(key, INCIDENT_STATES.get(key, "Состояние не уточнено"))
 
 static func symbol(incident: Dictionary) -> String:
 	return {"waiting": "!", "en_route": "→", "resolving": "…", "resolved": "✓", "missed": "×", "issue": "!", "completed": "·"}.get(status_key(incident), "·")

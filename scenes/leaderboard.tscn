@@ -1,73 +1,11 @@
-[gd_scene load_steps=5 format=3]
-
-[ext_resource type="PackedScene" path="res://scenes/progress_screen.tscn" id="1"]
-[ext_resource type="Script" path="res://scripts/leaderboard.gd" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/paged_records.tscn" id="3"]
-[sub_resource type="ButtonGroup" id="Scope"]
-
-[node name="Leaderboard" instance=ExtResource("1")]
-script = ExtResource("2")
-
-[node name="Title" parent="Margin/Content/Header/Text" index="1"]
-text = "Рейтинг"
-
-[node name="Subtitle" parent="Margin/Content/Header/Text" index="2"]
-text = "Учитывается лучший результат сценария. Повтор добавляет только улучшение."
-
-[node name="Filters" type="GridContainer" parent="Margin/Content/Body" index="0"]
-unique_name_in_owner = true
-layout_mode = 2
-columns = 3
-
-[node name="Crew" type="Button" parent="Margin/Content/Body/Filters"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_pressed = true
-button_group = SubResource("Scope")
-text = "Бригада"
-
-[node name="Depot" type="Button" parent="Margin/Content/Body/Filters"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("Scope")
-text = "Депо"
-
-[node name="Company" type="Button" parent="Margin/Content/Body/Filters"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-toggle_mode = true
-button_group = SubResource("Scope")
-text = "Компания"
-
-[node name="ScopeLabel" type="Label" parent="Margin/Content/Body" index="1"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"Section"
-text = "Бригада"
-autowrap_mode = 3
-
-[node name="OwnRank" type="Label" parent="Margin/Content/Body" index="2"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Ваше место · —"
-autowrap_mode = 3
-
-[node name="DemoNotice" type="Label" parent="Margin/Content/Body" index="3"]
-layout_mode = 2
-theme_type_variation = &"Small"
-text = "ДЕМО — демонстрационная запись. Все участники вымышленные. Ваш результат отмечен словом «Вы»."
-autowrap_mode = 3
-
-[node name="Records" parent="Margin/Content/Body" index="4" instance=ExtResource("3")]
-unique_name_in_owner = true
-layout_mode = 2
-
-[connection signal="pressed" from="Margin/Content/Body/Filters/Crew" to="." method="_on_scope" binds=["crew"]]
-[connection signal="pressed" from="Margin/Content/Body/Filters/Depot" to="." method="_on_scope" binds=["depot"]]
-[connection signal="pressed" from="Margin/Content/Body/Filters/Company" to="." method="_on_scope" binds=["company"]]
-[connection signal="page_requested" from="Margin/Content/Body/Records" to="." method="_on_page"]
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/leaderboard.gd" id="1"]
+[ext_resource type="Theme" path="res://theme/report_theme.tres" id="2"]
+[node name="Leaderboard" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2")
+script = ExtResource("1")

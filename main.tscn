@@ -32,7 +32,13 @@ anchor_bottom = 1.0
 mouse_filter = 2
 color = Color(0.88, 0.89, 0.85, 1)
 
+[node name="TripScreen" parent="." instance=ExtResource("4")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
 [node name="Layout" type="VBoxContainer" parent="."]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,9 +104,9 @@ all_tabs_in_front = false
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="TripScreen" parent="Layout/Screens" instance=ExtResource("4")]
-unique_name_in_owner = true
+[node name="TripSlot" type="Control" parent="Layout/Screens"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Decision" parent="Layout/Screens" instance=ExtResource("5")]
 unique_name_in_owner = true
@@ -145,9 +151,9 @@ script = ExtResource("8")
 [connection signal="pressed" from="Layout/Connection/Content/Retry" to="." method="_on_health"]
 [connection signal="start_requested" from="Layout/Screens/StartScreen" to="." method="_on_start"]
 [connection signal="health_requested" from="Layout/Screens/StartScreen" to="." method="_on_health"]
-[connection signal="request_selected" from="Layout/Screens/TripScreen" to="." method="_on_request_selected"]
-[connection signal="assignment_requested" from="Layout/Screens/TripScreen" to="." method="_on_assignment_requested"]
-[connection signal="back_requested" from="Layout/Screens/TripScreen" to="." method="_on_back_to_start"]
+[connection signal="request_selected" from="TripScreen" to="." method="_on_request_selected"]
+[connection signal="assignment_requested" from="TripScreen" to="." method="_on_assignment_requested"]
+[connection signal="back_requested" from="TripScreen" to="." method="_on_back_to_start"]
 [connection signal="choice_selected" from="Layout/Screens/Decision" to="." method="_on_choice_selected"]
 [connection signal="cancelled" from="Layout/Screens/Decision" to="." method="_on_back_to_trip"]
 [connection signal="back_requested" from="Layout/Screens/Debrief" to="." method="_on_back_to_trip"]
